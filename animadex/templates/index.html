@@ -36,13 +36,14 @@
     </button>
 
     <div class="modeswitch" id="modeswitch">
-      <button type="button" data-mode="characters" class="on">Characters</button>
-      <button type="button" data-mode="artists">Artists</button>
-      <button type="button" data-mode="poses">Poses</button>
-      <button type="button" data-mode="clothing">Clothing</button>
-      <button type="button" data-mode="backgrounds">Backgrounds</button>
-      <button type="button" data-mode="expressions">Expressions</button>
-      <button type="button" data-mode="copyrights">Copyright</button>
+      {%- set tabs = [('characters', 'Characters'), ('artists', 'Artists'),
+          ('poses', 'Poses'), ('clothing', 'Clothing'),
+          ('backgrounds', 'Backgrounds'), ('expressions', 'Expressions'),
+          ('copyrights', 'Copyright')] %}
+      {%- for key, label in tabs if avail_modes is not defined
+                                    or key in avail_modes %}
+      <button type="button" data-mode="{{ key }}"{% if loop.first %} class="on"{% endif %}>{{ label }}</button>
+      {%- endfor %}
     </div>
 
     <div class="search">
@@ -256,7 +257,8 @@
 
 {% if static_site %}
   <script>window.ANIMADEX_DEV = false;
-  window.ANIMADEX_STATIC_DATA = {{ static_data|tojson }};</script>
+  window.ANIMADEX_STATIC_DATA = {{ static_data|tojson }};
+  window.ANIMADEX_MODES = {{ avail_modes|tojson }};</script>
   <script src="{{ url_for('static', filename='static-data.js') }}"></script>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 {% else %}

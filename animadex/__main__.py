@@ -107,7 +107,9 @@ def _cmd_export_static(args):
         cfg, out=args.out, site_url=args.site_url, img_base=args.img_base,
         contact_email=args.contact_email,
         full_images=not args.no_full_images, pages=not args.no_pages,
-        exclude_file=args.exclude)
+        exclude_file=args.exclude,
+        skip_modes=([m for m in args.skip_modes.split(',') if m]
+                    if args.skip_modes is not None else None))
     for mode, st in stats.items():
         print(f'  {mode:12} {st["exported"]:6} exported'
               f'  ({st["no_thumb"]} without thumbnail, '
@@ -203,6 +205,10 @@ def main(argv=None):
                    help='Exclude list (default static_site/exclude.txt).')
     s.add_argument('--no-full-images', action='store_true',
                    help='Skip linking full-size images into static_site/r2.')
+    s.add_argument('--skip-modes',
+                   help='Comma-separated datasets to leave out entirely, '
+                        'e.g. characters,artists,backgrounds. Overrides '
+                        'skip_modes in site.toml.')
     s.add_argument('--no-pages', action='store_true',
                    help='Skip the per-character pages.')
     s.set_defaults(func=_cmd_export_static)

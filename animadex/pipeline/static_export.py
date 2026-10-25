@@ -180,7 +180,7 @@ def _category_map(conn, mode: str):
 class Export:
     def __init__(self, cfg: Config, *, out: Path, r2: Path, site_url='',
                  img_base='', contact_email='', full_images=True,
-                 pages=True, exclude=None):
+                 pages=True, exclude=None, skip_modes=()):
         self.cfg = cfg
         self.out = out
         self.r2 = r2
@@ -190,6 +190,8 @@ class Export:
         self.full_images = full_images
         self.pages = pages
         self.ex_items, self.ex_series = exclude or (set(), set())
+        self.skip = set(skip_modes)
+        self.modes = tuple(m for m in MODES if m not in self.skip)
         self.stats: dict[str, dict] = {}
         self.char_rows: list[dict] = []     # for pages + landing + sitemap
 
@@ -288,11 +290,17 @@ class Export:
     def run(self, app) -> dict:
         for sub in ('data', 'c', 'gallery', 'static'):
             shutil.rmtree(self.out / sub, ignore_errors=True)
+        # a skipped mode must not leave files from an earlier export behind
+        gone = set(self.skip) | ({'copyrights'}
+                                 if 'characters' in self.skip else set())
+        for m in gone:
+            shutil.rmtree(self.out / 'thumbs' / m, ignore_errors=True)
+            shutil.rmtree(self.r2 / m, ignore_errors=True)
         conn = db.connect_ro(self.cfg.paths.database)
         try:
             manifest = {'page_size': self.cfg.gallery.page_size,
                         'img_base': self.img_base, 'shards': {}}
-            for mode in MODES:
+            for mode in self.modes:
                 shard = self.dataset(conn, mode)
                 blob = json.dumps(shard, ensure_ascii=False,
                                   separators=(',', ':'))
@@ -300,7 +308,7 @@ class Export:
                 _write(self.out / 'data' / f'{mode}.{h}.json', blob)
                 manifest['shards'][mode] = f'/data/{mode}.{h}.json'
             counts = (len(self.char_rows),
-                      self.stats['artists']['exported'])
+                      self.stats.get('artists', {}).get('exported', 0))
             self._static_files()
             self._pages(app, conn, manifest, counts)
         finally:
@@ -322,13 +330,14 @@ class Export:
         with app.test_request_context('/'):
             _write(self.out / 'gallery' / 'index.html', render_template(
                 'index.html', static_site=True, dev=False,
-                static_data=manifest, contact_email=self.contact_email))
+                static_data=manifest, avail_modes=self._avail(), contact_email=self.contact_email))
             _write(self.out / 'index.html', render_template(
                 'landing.html', static_site=True, gallery_url='/gallery/',
+                avail_modes=self._avail(),
                 site_url=site or None, collage=self._collage(),
                 char_count=_format_count(counts[0]),
                 artist_count=_format_count(counts[1])))
-            if not self.pages:
+            if not self.pages or not self.char_rows:
                 return
             taken: set[str] = set()
             self.page_urls = []
@@ -353,6 +362,13 @@ class Export:
                            site_origin=site, page_url=page_url,
                            gallery_url='/gallery/'))
                 self.page_urls.append((page_url, r['image_version']))
+
+    def _avail(self):
+        """Browsable tabs in the static build, in tab order. 'copyrights'
+        is derived from characters, so it follows them."""
+        order = ('characters', 'artists', *db.KINDS, 'copyrights')
+        return [m for m in order if m not in self.skip and not (
+            m == 'copyrights' and 'characters' in self.skip)]
 
     # -- url builders (mirror static-data.js) -----------------------------
     @staticmethod
@@ -413,7 +429,7 @@ class Export:
 
 def export_static(cfg: Config, *, out=None, site_url=None, img_base=None,
                   contact_email=None, full_images=True, pages=True,
-                  exclude_file=None) -> dict:
+                  exclude_file=None, skip_modes=None) -> dict:
     from ..app import create_app
     s = load_settings()
     out = Path(out) if out else ROOT / 'dist'
@@ -424,6 +440,8 @@ def export_static(cfg: Config, *, out=None, site_url=None, img_base=None,
         contact_email=(contact_email if contact_email is not None
                        else s.get('contact_email', '')),
         full_images=full_images, pages=pages,
+        skip_modes=(skip_modes if skip_modes is not None
+                    else s.get('skip_modes', [])),
         exclude=load_excludes(Path(exclude_file) if exclude_file
                               else EXCLUDE_FILE))
     return exp.run(create_app(cfg))

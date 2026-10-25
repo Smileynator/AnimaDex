@@ -57,6 +57,9 @@
   }
   </script>
 </head>
+{% set gurl = gallery_url|default(url_for('pages.index')) %}
+{% set partial = avail_modes is defined and 'characters' not in avail_modes %}
+{% set labels = {'characters': 'characters', 'artists': 'artists', 'poses': 'poses', 'clothing': 'clothing', 'backgrounds': 'backgrounds', 'expressions': 'expressions', 'copyrights': 'series'} %}
 <body class="landing-page">
   <div class="bg-fx"></div>
 
@@ -79,9 +82,21 @@
 
     <h1 class="land-title">
       Expansive catalogue of <span class="grad-text">ANIMA AI</span>
-      character &amp; prompt samples
+      {{ 'prompt samples' if partial else 'character &amp; prompt samples' }}
     </h1>
 
+{% if partial %}
+    <p class="land-sub">
+      Poses, outfits, expressions and more for the ANIMA AI model,
+      categorized and highly searchable.
+    </p>
+    <nav class="land-cta" aria-label="Browse">
+      {% for m in avail_modes if m != 'copyrights' %}
+      <a href="{{ gurl }}?mode={{ m }}"
+         class="land-btn{% if loop.first %} primary{% endif %}">Browse {{ labels[m] }} →</a>
+      {% endfor %}
+    </nav>
+{% else %}
     <p class="land-sub">
       Over {{ char_count }}
       <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=characters">characters</a>
@@ -96,6 +111,7 @@
       <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=artists"
          class="land-btn">Browse artists →</a>
     </nav>
+{% endif %}
 
     <section class="land-feats" aria-label="Features">
       <article class="feat">
@@ -107,9 +123,11 @@
       </article>
       <article class="feat">
         <span class="feat-mark" aria-hidden="true">⛀</span>
-        <h2>Series &amp; filters</h2>
-        <p>Browse by series collage, or narrow by hair colour, hair
-           length, eye colour, gender and more.</p>
+        <h2>{{ 'Categories' if partial else 'Series &amp; filters' }}</h2>
+        <p>{% if partial %}Narrow every set down by category, or copy the
+           tags straight into your prompt.{% else %}Browse by series
+           collage, or narrow by hair colour, hair length, eye colour,
+           gender and more.{% endif %}</p>
       </article>
     </section>
   </main>
@@ -117,9 +135,9 @@
   <footer class="land-foot">
     <span class="site-mark">ANIMA2.9BDEX</span>
     <nav aria-label="Catalogue">
-      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=characters">Characters</a>
-      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=artists">Artists</a>
-      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=copyrights">Series</a>
+      {% for m in (avail_modes if avail_modes is defined else ['characters', 'artists', 'copyrights']) %}
+      <a href="{{ gurl }}?mode={{ m }}">{{ labels[m]|capitalize }}</a>
+      {% endfor %}
     </nav>
   </footer>
 </body>

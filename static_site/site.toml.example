@@ -10,3 +10,7 @@ img_base = "https://img.example.com"
 
 # Shown as a mailto: link in the footer. Leave empty to show none.
 contact_email = ""
+
+# Datasets to leave out entirely (characters, artists, poses, clothing,
+# backgrounds, expressions). Characters also removes the series tab.
+skip_modes = []

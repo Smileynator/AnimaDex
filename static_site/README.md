@@ -14,7 +14,7 @@ python -m animadex export-static
 | `dist/` | the whole site: HTML, JSON data, thumbnails, css/js | **Cloudflare Pages** |
 | `r2/` | full-size images, named `<mode>/<id>.png` (hard links, no extra disk) | **R2 bucket** |
 | `exclude.txt` | items to leave out (content pass) | read by the export |
-| `site.toml` | your URLs / email (copy from `site.toml.example`) | read by the export |
+| `site.toml` | your URLs and `skip_modes` (copy from `site.toml.example`) | read by the export |
 | `static-data.js` | browser-side "API" that replaces Flask's `/api/...` | copied into `dist/static/` |
 
 `dist/` and `r2/` are generated and git-ignored; re-run the export any time.
@@ -38,12 +38,19 @@ Re-running is incremental (unchanged thumbnails are not copied again).
    create an R2 API token, then with [rclone](https://rclone.org) configured
    for R2: `rclone copy static_site/r2 r2:anima-img --progress`
 7. **Deploy the site:**
-   `npx wrangler pages deploy static_site/dist --project-name anima`
+   `npx wrangler pages deploy static_site/dist --project-name animadex --branch main`
    (first run asks you to log in and creates the Pages project).
 8. **Login in front (optional):** Zero Trust -> Access -> Applications ->
    Self-hosted, point it at the Pages domain, allow your e-mail list.
    Access can't cover the R2 domain unless you add it too; the image URLs are
    unguessable hashes, which is usually enough.
+
+## Leaving whole datasets out
+
+`skip_modes = ["characters", "artists", "backgrounds"]` in `site.toml` (or
+`--skip-modes characters,artists`) publishes only the other datasets. Their
+tabs, data, thumbnails and pages are dropped, and the landing page adapts.
+Remove an entry and re-export + redeploy to publish that dataset.
 
 ## Day to day
 
@@ -52,7 +59,7 @@ Generate/add things locally as usual, then:
 ```
 python -m animadex export-static
 rclone copy static_site/r2 r2:anima-img
-npx wrangler pages deploy static_site/dist --project-name anima
+npx wrangler pages deploy static_site/dist --project-name animadex --branch main
 ```
 
 ## Limits to keep in mind (free plan)

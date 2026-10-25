@@ -43,7 +43,10 @@ const MODES = {
   },
 };
 const DEFAULT_OPEN = new Set();   // extra groups open by default (the first one always is)
-const DEV = window.ANIMADEX_DEV === true;   // run: python app.py --dev
+const DEV = window.ANIMADEX_DEV === true;
+// static build: only some datasets are published (see static_site/README.md)
+const AVAILABLE = window.ANIMADEX_MODES || Object.keys(MODES);
+const DEFAULT_MODE = AVAILABLE.includes('characters') ? 'characters' : AVAILABLE[0];   // run: python app.py --dev
 const FACET_LABELS = {
   character:'Character', copyright:'Series', hair_color:'Hair',
   hair_length:'Length', eye_color:'Eyes', gender:'Gender', artist:'Artist',
@@ -55,11 +58,11 @@ function freshFilters(mode){
 }
 
 const state = {
-  mode: 'characters',
+  mode: DEFAULT_MODE,
   q: '',
   sort: 'count',
   seed: null,                 // random-sort shuffle key
-  filters: freshFilters('characters'),
+  filters: freshFilters(DEFAULT_MODE),
   labels: {},                 // value -> human label (for active chips)
   page: 1,
   total: 0,
@@ -364,7 +367,7 @@ function syncSortControls(){
 function applyURL(){
   const p = new URLSearchParams(location.search);
   const mode = p.get('mode');
-  state.mode = MODES[mode] ? mode : 'characters';
+  state.mode = MODES[mode] && AVAILABLE.includes(mode) ? mode : DEFAULT_MODE;
   state.q = p.get('q') || '';
   const sortParam = p.get('sort');
   state.sort = (sortParam === 'az' || sortParam === 'random') ? sortParam : 'count';
