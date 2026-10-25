@@ -1035,10 +1035,11 @@ body.no-sidebar .main{border-left:none}
 .land-title{
   font-size:clamp(30px, 5.4vw, 60px);font-weight:800;line-height:1.08;
   letter-spacing:-.6px;max-width:980px;margin:0 auto;
+  text-wrap:balance;
 }
 .grad-text{
   background:var(--grad);-webkit-background-clip:text;background-clip:text;
-  color:transparent;
+  color:transparent;white-space:nowrap;     /* keep "ANIMA 2.9B" on one line */
 }
 .land-title::after{
   content:'';display:block;width:96px;height:4px;border-radius:2px;
@@ -1046,7 +1047,8 @@ body.no-sidebar .main{border-left:none}
 }
 .land-sub{
   font-size:clamp(15px, 1.7vw, 19px);font-weight:500;line-height:1.55;
-  color:var(--muted);margin-top:24px;max-width:680px;
+  color:var(--muted);margin-top:32px;max-width:760px;
+  line-height:1.65;text-wrap:balance;
 }
 .land-sub a{
   color:var(--text);font-weight:600;padding-bottom:2px;
