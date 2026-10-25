@@ -1,3 +1,4 @@
+{%- set blurb = "Poses, outfits, expressions, themes, and characters for the ANIMA 2.9B Preview V1 image generation model, categorized and highly searchable. Created to find out what the model can and cannot do, poor prompt results are left as is, on purpose." %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,9 +18,9 @@
 {% if static_site %}
   <script>if (location.search) location.replace('{{ gallery_url }}' + location.search);</script>
 {% endif %}
-  <title>ANIMA2.9BDEX — Anime character &amp; artist catalogue for the ANIMA AI model</title>
+  <title>{{ 'ANIMA2.9BDEX — Prompt samples for the ANIMA 2.9B Preview V1 model' if static_site else 'ANIMA2.9BDEX — Anime character &amp; artist catalogue for the ANIMA AI model' }}</title>
   <meta name="description"
-        content="A catalogue of over {{ char_count }} anime characters and {{ artist_count }} artists rendered with the ANIMA AI model. Searchable by tags, copyright, hair colour, eye colour and gender.">
+        content="{{ blurb if static_site else 'A catalogue of over ' ~ char_count ~ ' anime characters and ' ~ artist_count ~ ' artists rendered with the ANIMA AI model. Searchable by tags, copyright, hair colour, eye colour and gender.' }}">
   <meta name="keywords"
         content="anime, AI, ANIMA model, character catalogue, danbooru, artist styles, stable diffusion, character prompts">
   <meta name="robots" content="index, follow">
@@ -29,7 +30,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="ANIMA2.9BDEX — Anime character &amp; artist catalogue">
   <meta property="og:description"
-        content="Over {{ char_count }} characters and {{ artist_count }} artists, categorised and highly searchable.">
+        content="{{ blurb if static_site else 'Over ' ~ char_count ~ ' characters and ' ~ artist_count ~ ' artists, categorised and highly searchable.' }}">
   <meta property="og:url" content="{{ (site_url or '') if static_site else request.url_root }}">
   <meta property="og:site_name" content="ANIMA2.9BDEX">
   <meta property="og:locale" content="en_US">
@@ -38,7 +39,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="ANIMA2.9BDEX — Anime character &amp; artist catalogue">
   <meta name="twitter:description"
-        content="Over {{ char_count }} characters and {{ artist_count }} artists, categorised and highly searchable.">
+        content="{{ blurb if static_site else 'Over ' ~ char_count ~ ' characters and ' ~ artist_count ~ ' artists, categorised and highly searchable.' }}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +53,7 @@
     "name": "ANIMA2.9BDEX",
     "alternateName": "Anima character & artist catalogue",
     "url": "{{ (site_url or '') if static_site else request.url_root }}",
-    "description": "A catalogue of over {{ char_count }} anime characters and {{ artist_count }} artists rendered with the ANIMA AI model -- searchable by tags, copyright and traits.",
+    "description": "{{ blurb if static_site else 'A catalogue of over ' ~ char_count ~ ' anime characters and ' ~ artist_count ~ ' artists rendered with the ANIMA AI model -- searchable by tags, copyright and traits.' }}",
     "inLanguage": "en"
   }
   </script>
@@ -81,15 +82,12 @@
     </a>
 
     <h1 class="land-title">
-      Expansive catalogue of <span class="grad-text">ANIMA AI</span>
+      Expansive catalogue of <span class="grad-text">ANIMA 2.9b</span>
       {{ 'prompt samples' if partial else 'character &amp; prompt samples' }}
     </h1>
 
-{% if partial %}
-    <p class="land-sub">
-      Poses, outfits, expressions and more for the ANIMA AI model,
-      categorized and highly searchable.
-    </p>
+{% if static_site %}
+    <p class="land-sub">{{ blurb }}</p>
     <nav class="land-cta" aria-label="Browse">
       {% for m in avail_modes if m != 'copyrights' %}
       <a href="{{ gurl }}?mode={{ m }}"
