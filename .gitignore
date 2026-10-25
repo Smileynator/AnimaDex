@@ -66,3 +66,4 @@ static_site/dist/
 static_site/r2/
 static_site/site.toml
 .wrangler/
+static_site/r2-uploaded.json
