@@ -204,7 +204,7 @@ function tileHTML(c){
             onerror="this.remove()">` : '';
 
   const buttons = [];
-  if (c.has_image)
+  if (c.has_image && c.img_url)
     buttons.push(`<button class="actbtn previewbtn">
       <span class="ic">⛶</span> Full image</button>`);
   if (c.url)
@@ -596,9 +596,11 @@ async function loadFacets(){
   $('#sort').querySelector('[data-sort="count"]').textContent =
     MODES[state.mode].countLabel;
   const lf = $('#loras-filter');
-  lf.hidden = true;                 // LoRA filter is not used
-  $('#loras-only').checked = state.lorasOnly;
-  lf.classList.toggle('on', state.lorasOnly);
+  if (lf){
+    lf.hidden = true;               // LoRA filter is not used
+    $('#loras-only').checked = state.lorasOnly;
+    lf.classList.toggle('on', state.lorasOnly);
+  }
   if (DEV){
     $('#devbar').hidden = state.mode !== 'artists';
     $('#devbar-regen').hidden = state.mode !== 'characters';
@@ -832,6 +834,7 @@ if (DEV){
 
 /* ----- dev: regenerate a character render --------------------------- */
 let regenSlug = '', regenTile = null;
+const regenModal = $('#regen-modal');     // absent in the static build
 
 function setRegenMode(on){
   state.regenMode = on;
@@ -1026,7 +1029,7 @@ facetsEl.addEventListener('change', e => {
 });
 
 // "LoRAs Available" toggle (a standalone checkbox below the facets)
-$('#loras-only').addEventListener('change', e => {
+if ($('#loras-only')) $('#loras-only').addEventListener('change', e => {
   state.lorasOnly = e.target.checked;
   $('#loras-filter').classList.toggle('on', e.target.checked);
   refreshChips();
@@ -1038,6 +1041,7 @@ $('#loras-only').addEventListener('change', e => {
   const btn = $('#lora-help-btn');
   const pop = $('#lora-help-pop');
   const close = $('#lora-help-close');
+  if (!btn || !pop || !close) return;        // static build has no LoRA help
 
   function place(){
     const r = btn.getBoundingClientRect();
@@ -1102,8 +1106,10 @@ clearBtn.addEventListener('click', () => {
   state.lorasOnly = false;
   state.favsOnly = false;
   syncFavsToggle();
-  $('#loras-only').checked = false;
-  $('#loras-filter').classList.remove('on');
+  if ($('#loras-only')){
+    $('#loras-only').checked = false;
+    $('#loras-filter').classList.remove('on');
+  }
   facetsEl.querySelectorAll('input:checked').forEach(b => {
     b.checked = false; b.closest('.fopt').classList.remove('on');
   });
@@ -1239,8 +1245,8 @@ pagerEl.addEventListener('click', e => {
 // keyboard: "/" focuses search, Escape closes modal / clears search
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && !modal.hidden){ closePreview(); return; }
-  if (e.key === 'Escape' && !$('#regen-modal').hidden){ closeRegen(); return; }
-  if (e.key === 'Escape' && !$('#contact-modal').hidden){ closeContact(); return; }
+  if (e.key === 'Escape' && regenModal && !regenModal.hidden){ closeRegen(); return; }
+  if (e.key === 'Escape' && contactModal && !contactModal.hidden){ closeContact(); return; }
   const typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
   if (e.key === '/' && !typing){ e.preventDefault(); $('#q').focus(); }
   if (e.key === 'Escape' && document.activeElement === $('#q')){
@@ -1252,7 +1258,7 @@ document.addEventListener('keydown', e => {
 window.addEventListener('popstate', applyURL);
 
 /* ===== contact form ================================================= */
-const contactModal = $('#contact-modal');
+const contactModal = $('#contact-modal');   // absent in the static build
 const contactForm = $('#contact-form');
 const contactReason = $('#contact-reason');
 const contactStatus = $('#contact-status');
@@ -1291,6 +1297,7 @@ function closeContact(){
   document.body.classList.remove('noscroll');
 }
 
+if (contactModal){
 $('#contact-open').addEventListener('click', openContact);
 contactReason.addEventListener('change', () => {
   const isLora = contactReason.value === 'lora_takedown';
@@ -1336,6 +1343,7 @@ contactForm.addEventListener('submit', async e => {
     submitBtn.disabled = false;
   }
 });
+}
 
 /* ===== mobile drawer ================================================ */
 /* Below 760px the modeswitch / sort are reparented

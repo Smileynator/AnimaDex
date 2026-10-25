@@ -14,20 +14,23 @@
                               href="{{ url_for('static', filename='apple-touch-icon.png') }}">
   <link rel="manifest"         href="{{ url_for('static', filename='site.webmanifest') }}">
 
+{% if static_site %}
+  <script>if (location.search) location.replace('{{ gallery_url }}' + location.search);</script>
+{% endif %}
   <title>ANIMA2.9BDEX — Anime character &amp; artist catalogue for the ANIMA AI model</title>
   <meta name="description"
         content="A catalogue of over {{ char_count }} anime characters and {{ artist_count }} artists rendered with the ANIMA AI model. Searchable by tags, copyright, hair colour, eye colour and gender.">
   <meta name="keywords"
         content="anime, AI, ANIMA model, character catalogue, danbooru, artist styles, stable diffusion, character prompts">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="{{ request.url_root }}">
+  <link rel="canonical" href="{{ (site_url or '') if static_site else request.url_root }}">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="ANIMA2.9BDEX — Anime character &amp; artist catalogue">
   <meta property="og:description"
         content="Over {{ char_count }} characters and {{ artist_count }} artists, categorised and highly searchable.">
-  <meta property="og:url" content="{{ request.url_root }}">
+  <meta property="og:url" content="{{ (site_url or '') if static_site else request.url_root }}">
   <meta property="og:site_name" content="ANIMA2.9BDEX">
   <meta property="og:locale" content="en_US">
 
@@ -48,7 +51,7 @@
     "@type": "WebSite",
     "name": "ANIMA2.9BDEX",
     "alternateName": "Anima character & artist catalogue",
-    "url": "{{ request.url_root }}",
+    "url": "{{ (site_url or '') if static_site else request.url_root }}",
     "description": "A catalogue of over {{ char_count }} anime characters and {{ artist_count }} artists rendered with the ANIMA AI model -- searchable by tags, copyright and traits.",
     "inLanguage": "en"
   }
@@ -81,16 +84,16 @@
 
     <p class="land-sub">
       Over {{ char_count }}
-      <a href="{{ url_for('pages.index') }}?mode=characters">characters</a>
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=characters">characters</a>
       and {{ artist_count }}
-      <a href="{{ url_for('pages.index') }}?mode=artists">artists</a>
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=artists">artists</a>
       categorized and highly searchable.
     </p>
 
     <nav class="land-cta" aria-label="Browse">
-      <a href="{{ url_for('pages.index') }}?mode=characters"
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=characters"
          class="land-btn primary">Browse characters →</a>
-      <a href="{{ url_for('pages.index') }}?mode=artists"
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=artists"
          class="land-btn">Browse artists →</a>
     </nav>
 
@@ -114,9 +117,9 @@
   <footer class="land-foot">
     <span class="site-mark">ANIMA2.9BDEX</span>
     <nav aria-label="Catalogue">
-      <a href="{{ url_for('pages.index') }}?mode=characters">Characters</a>
-      <a href="{{ url_for('pages.index') }}?mode=artists">Artists</a>
-      <a href="{{ url_for('pages.index') }}?mode=copyrights">Series</a>
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=characters">Characters</a>
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=artists">Artists</a>
+      <a href="{{ gallery_url|default(url_for('pages.index')) }}?mode=copyrights">Series</a>
     </nav>
   </footer>
 </body>

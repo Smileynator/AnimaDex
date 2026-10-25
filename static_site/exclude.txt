@@ -1,0 +1,10 @@
+# Items left out of the published static site. One per line, '#' = comment.
+#
+#   characters/<slug>      a single character      e.g. characters/hatsune_miku
+#   artists/<slug>         a single artist
+#   poses/<slug>           (also clothing/, backgrounds/, expressions/)
+#   series/<copyright>     every character from one series
+#
+# The slug is what you see in the gallery URL / the `slug` column of the
+# dataset CSV. Excluded items are dropped from the JSON, the thumbnails, the
+# per-character pages and the R2 folder.

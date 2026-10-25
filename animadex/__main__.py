@@ -7,6 +7,7 @@ Subcommands:
     build-thumbs Build any missing thumbnails / copyright collages.
     score       Score every artist with no score yet.
     sync-loras  Pull character LoRAs from CivitAI.
+    export-static Build the read-only static site (Cloudflare Pages).
     genkey      Print a fresh hex secret_key for config.toml.
     db-init     Create the schema + data dirs without doing anything else.
 
@@ -99,6 +100,22 @@ def _cmd_redo(args):
     print(f'Redo: {done} done, {failed} failed.')
 
 
+def _cmd_export_static(args):
+    from .pipeline.static_export import export_static
+    cfg = load_config()
+    stats = export_static(
+        cfg, out=args.out, site_url=args.site_url, img_base=args.img_base,
+        contact_email=args.contact_email,
+        full_images=not args.no_full_images, pages=not args.no_pages,
+        exclude_file=args.exclude)
+    for mode, st in stats.items():
+        print(f'  {mode:12} {st["exported"]:6} exported'
+              f'  ({st["no_thumb"]} without thumbnail, '
+              f'{st["excluded"]} excluded)')
+    print('\nDone. Deploy static_site/dist to Cloudflare Pages; upload '
+          'static_site/r2 to R2 (see static_site/README.md).')
+
+
 def _cmd_genkey(args):
     print(secrets.token_hex(32))
 
@@ -168,6 +185,27 @@ def main(argv=None):
     s.add_argument('--full', action='store_true',
                    help='Ignore the stored timestamp; full re-sync.')
     s.set_defaults(func=_cmd_sync_loras)
+
+    s = sub.add_parser('export-static',
+                       help='Write the read-only static site to '
+                            'static_site/dist (for Cloudflare Pages).')
+    s.add_argument('--out', help='Output folder (default static_site/dist).')
+    s.add_argument('--site-url',
+                   help='Public origin, e.g. https://anima.example.com '
+                        '(canonical links + sitemap). Overrides site.toml.')
+    s.add_argument('--img-base',
+                   help='Public URL of the R2 images bucket, e.g. '
+                        'https://img.example.com . Without it the static '
+                        'site shows thumbnails only.')
+    s.add_argument('--contact-email',
+                   help='Shown as a mailto: link in the footer.')
+    s.add_argument('--exclude',
+                   help='Exclude list (default static_site/exclude.txt).')
+    s.add_argument('--no-full-images', action='store_true',
+                   help='Skip linking full-size images into static_site/r2.')
+    s.add_argument('--no-pages', action='store_true',
+                   help='Skip the per-character pages.')
+    s.set_defaults(func=_cmd_export_static)
 
     s = sub.add_parser('genkey',
                        help='Print a fresh hex secret_key for config.toml.')

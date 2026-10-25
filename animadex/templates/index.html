@@ -65,6 +65,7 @@
               aria-label="Close filters">×</button>
       <div class="sidebar-title">Filters</div>
       <div id="facets"></div>
+{% if not static_site %}
       <label class="fopt loras-filter" id="loras-filter" hidden>
         <input type="checkbox" id="loras-only">
         <span class="box"></span>
@@ -73,6 +74,7 @@
                 aria-label="About LoRA matching" aria-expanded="false"
                 aria-controls="lora-help-pop">?</button>
       </label>
+{% endif %}
     </aside>
 
     <main class="main">
@@ -80,6 +82,7 @@
         <span id="resultcount" class="rc">Loading…</span>
         <div id="chips" class="activechips"></div>
         <button id="clearall" class="clearall" hidden>Clear all ✕</button>
+{% if not static_site %}
         <button id="add-open" class="favs-toggle add-open" type="button"
                 hidden title="Add your own item to this dataset (local only)">
           <span class="fh">＋</span> Add
@@ -88,12 +91,14 @@
                 hidden title="Images flagged for redo with a custom prompt (local only)">
           <span class="fh">↻</span> Redo list <span id="redo-count"></span>
         </button>
+{% endif %}
         <button id="favs-toggle" class="favs-toggle" type="button" hidden
                 title="Show only my favourites (saved in this browser)">
           <span class="fh">♥</span> Favorites <span id="favs-count"></span>
         </button>
       </div>
 
+{% if not static_site %}
       <div id="devbar" class="devbar" hidden>
         <span class="dev-tag">DEV</span>
         <span class="dev-cap">Tag with</span>
@@ -113,6 +118,7 @@
           Regenerate mode</button>
         <span id="regen-hint" class="dev-hint"></span>
       </div>
+{% endif %}
 
       <div id="gallery" class="gallery"></div>
       <div id="status" class="status"></div>
@@ -122,10 +128,16 @@
 
   <footer class="site-footer">
     <span class="site-mark">ANIMA2.9BDEX</span>
+{% if static_site %}
+    {% if contact_email %}<a class="footer-link"
+       href="mailto:{{ contact_email }}">Contact</a>{% endif %}
+{% else %}
     <button type="button" id="contact-open" class="footer-link">
       Contact</button>
+{% endif %}
   </footer>
 
+{% if not static_site %}
   <!-- Floating help popup for the LoRAs filter. Lives at body level so
        no overflow/clipping ancestor traps it behind the gallery tiles. -->
   <div class="fhelp-pop" id="lora-help-pop" role="dialog"
@@ -161,6 +173,7 @@
        a mismatch, please report it via the contact form in the footer.
     </p>
   </div>
+{% endif %}
 
   <div id="modal" class="modal" hidden>
     <div class="modal-bg" data-close></div>
@@ -177,6 +190,7 @@
     </figure>
   </div>
 
+{% if not static_site %}
   <div id="regen-modal" class="regen-ov" hidden>
     <div class="regen-box">
       <h3 id="regen-title" class="regen-title">Regenerate</h3>
@@ -231,6 +245,7 @@
       </form>
     </div>
   </div>
+{% endif %}
 
   <!-- Backdrop behind the mobile sidebar drawer. -->
   <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
@@ -239,8 +254,15 @@
 
   <div id="toast" class="toast"></div>
 
+{% if static_site %}
+  <script>window.ANIMADEX_DEV = false;
+  window.ANIMADEX_STATIC_DATA = {{ static_data|tojson }};</script>
+  <script src="{{ url_for('static', filename='static-data.js') }}"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+{% else %}
   <script>window.ANIMADEX_DEV = {{ 'true' if dev else 'false' }};</script>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
   <script src="{{ url_for('static', filename='redo.js') }}"></script>
+{% endif %}
 </body>
 </html>

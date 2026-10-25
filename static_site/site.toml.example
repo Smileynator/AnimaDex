@@ -1,0 +1,12 @@
+# Copy to site.toml (git-ignored) so `python -m animadex export-static`
+# needs no arguments. Command-line flags override these.
+
+# Public origin of the Pages site -- used for canonical links + sitemap.
+site_url = "https://anima.example.com"
+
+# Public URL of the R2 bucket that holds the full-size images (no trailing
+# slash). Leave empty for a thumbnails-only site.
+img_base = "https://img.example.com"
+
+# Shown as a mailto: link in the footer. Leave empty to show none.
+contact_email = ""

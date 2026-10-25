@@ -60,3 +60,8 @@ danbooru_*.csv
 test_kinds*/
 subsets/
 final_set_sheet.jpg
+
+# Static (Cloudflare) build output + local settings
+static_site/dist/
+static_site/r2/
+static_site/site.toml
