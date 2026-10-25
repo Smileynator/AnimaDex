@@ -1,0 +1,133 @@
+slug,name,tags,categories,traits
+expression-angry,Angry,"angry, furrowed brow",Angry & Annoyed,intense
+expression-ahegao,Ahegao,"ahegao, rolling eyes, tongue out",Comedic & Intense,intense|comedic
+expression-blush,Blush,blush,Cute & Shy,cute|shy
+expression-wink,Wink,"wink, smile",Eyes & Gaze,cute|playful
+expression-smile,Smile,smile,Happy & Cheerful,happy|gentle
+expression-tongue-out,Tongue Out,tongue out,Mouth & Gestures,playful|mouth
+expression-expressionless,Expressionless,expressionless,Neutral & Serious,neutral
+expression-sad,Sad,"sad, frown",Sad & Crying,gentle
+expression-sleepy,Sleepy,"sleepy, half-closed eyes",Sleepy & Tired,tired
+expression-smirk,Smirk,smirk,Smug & Playful,smug|confident
+expression-surprised,Surprised,"surprised, wide eyes, open mouth",Surprised & Afraid,open mouth
+expression-annoyed,Annoyed,"annoyed, frown",Angry & Annoyed,mild
+expression-crazy-eyes,Crazy Eyes,"crazy eyes, wide eyes",Comedic & Intense,intense
+expression-light-blush,Light Blush,light blush,Cute & Shy,cute|subtle
+expression-one-eye-closed,One Eye Closed,one eye closed,Eyes & Gaze,eyes
+expression-light-smile,Light Smile,light smile,Happy & Cheerful,happy|subtle
+expression-playful-tongue,Playful Tongue,"tongue out, wink",Mouth & Gestures,playful|mouth
+expression-neutral,Neutral,neutral expression,Neutral & Serious,neutral
+expression-gloomy,Gloomy,"gloomy, downcast eyes",Sad & Crying,sad
+expression-tired,Tired,"tired, half-closed eyes",Sleepy & Tired,tired
+expression-smug,Smug,smug,Smug & Playful,confident
+expression-shocked,Shocked,"shocked, wide eyes, open mouth",Surprised & Afraid,intense
+expression-frown,Frown,frown,Angry & Annoyed,sad|angry
+expression-crazy-smile,Crazy Smile,"crazy smile, wide eyes, grin",Comedic & Intense,intense
+expression-full-face-blush,Full-Face Blush,"full-face blush, embarrassed",Cute & Shy,cute|shy
+expression-closed-eyes,Closed Eyes,closed eyes,Eyes & Gaze,eyes|calm
+expression-grin,Grin,grin,Happy & Cheerful,happy|open mouth
+expression-p,:P,":p, tongue out",Mouth & Gestures,playful|mouth
+expression-serious,Serious,"serious, focused",Neutral & Serious,focused
+expression-tearing-up,Tearing Up,"tearing up, sad",Sad & Crying,sad|gentle
+expression-drowsy,Drowsy,"drowsy, sleepy",Sleepy & Tired,tired
+expression-smug-smile,Smug Smile,"smug smile, half-closed eyes",Smug & Playful,confident|playful
+expression-startled,Startled,"startled, wide eyes",Surprised & Afraid,intense
+expression-scowl,Scowl,"scowl, glaring",Angry & Annoyed,intense
+expression-yandere,Yandere,"yandere, crazy eyes, evil smile",Comedic & Intense,dark|intense
+expression-embarrassed,Embarrassed,"embarrassed, blush",Cute & Shy,cute|shy
+expression-happy-eyes,Happy Eyes,"happy eyes, smile",Eyes & Gaze,eyes|happy
+expression-big-grin,Big Grin,"big grin, open mouth",Happy & Cheerful,happy|energetic
+expression-parted-lips,Parted Lips,parted lips,Mouth & Gestures,mouth|subtle
+expression-bored,Bored,"bored, half-closed eyes",Neutral & Serious,neutral
+expression-tears,Tears,"tears, sad",Sad & Crying,sad
+expression-yawning,Yawning,"yawning, closed eyes, open mouth",Sleepy & Tired,tired|open mouth
+expression-doyagao,Doyagao,"doyagao, smug",Smug & Playful,confident|playful
+expression-wide-eyed,Wide-Eyed,wide-eyed,Surprised & Afraid,alert
+expression-glare,Glare,"glaring, narrowed eyes",Angry & Annoyed,intense
+expression-disgusted,Disgusted,"disgusted, grimace",Comedic & Intense,intense
+expression-shy,Shy,"shy, blush, looking away",Cute & Shy,cute
+expression-half-closed-eyes,Half-Closed Eyes,half-closed eyes,Eyes & Gaze,eyes
+expression-laughing,Laughing,"laughing, open mouth",Happy & Cheerful,happy|energetic
+expression-puckered-lips,Puckered Lips,puckered lips,Mouth & Gestures,mouth
+expression-blank-stare,Blank Stare,"blank stare, expressionless",Neutral & Serious,neutral
+expression-crying,Crying,"crying, tears",Sad & Crying,sad|intense
+expression-exhausted,Exhausted,"exhausted, bags under eyes",Sleepy & Tired,tired
+expression-sly-smile,Sly Smile,"sly smile, narrowed eyes",Smug & Playful,playful|confident
+expression-scared,Scared,"scared, worried, sweat",Surprised & Afraid,nervous
+expression-furrowed-brow,Furrowed Brow,"furrowed brow, serious",Angry & Annoyed,angry|focused
+expression-grimace,Grimace,"grimace, clenched teeth",Comedic & Intense,intense
+expression-flustered,Flustered,"flustered, blush, nervous",Cute & Shy,cute|nervous
+expression-jitome,Jitome,"jitome, expressionless",Eyes & Gaze,eyes|neutral
+expression-closed-eye-smile,Closed-Eye Smile,"closed eyes, smile",Happy & Cheerful,happy|cute
+expression-kiss,Kiss,"kiss, puckered lips, closed eyes",Mouth & Gestures,romantic|mouth
+expression-deadpan,Deadpan,"deadpan, expressionless",Neutral & Serious,neutral|comedic
+expression-sobbing,Sobbing,"sobbing, crying, tears",Sad & Crying,sad|intense
+expression-bags-under-eyes,Bags Under Eyes,"bags under eyes, tired",Sleepy & Tired,tired
+expression-mischievous-smile,Mischievous Smile,mischievous smile,Smug & Playful,playful
+expression-terrified,Terrified,"terrified, wide eyes, open mouth",Surprised & Afraid,intense
+expression-clenched-teeth,Clenched Teeth,"clenched teeth, angry",Angry & Annoyed,intense
+expression-facepalm,Facepalm,"facepalm, annoyed",Comedic & Intense,comedic|annoyed
+expression-bashful,Bashful,"bashful, light blush, looking away",Cute & Shy,cute|gentle
+expression-tareme,Tareme,"tareme, gentle eyes",Eyes & Gaze,eyes|gentle
+expression-open-mouth-smile,Open-Mouth Smile,"smile, open mouth",Happy & Cheerful,happy
+expression-lip-bite,Lip Bite,biting own lip,Mouth & Gestures,mouth
+expression-stoic,Stoic,"stoic, serious",Neutral & Serious,neutral|focused
+expression-wavy-mouth,Wavy Mouth,"wavy mouth, worried",Sad & Crying,sad|nervous
+expression-drooling-sleepily,Drooling Sleepily,"sleepy, drooling, half-closed eyes",Sleepy & Tired,tired|cute
+expression-evil-smile,Evil Smile,"evil smile, narrowed eyes",Smug & Playful,dark|playful
+expression-nervous,Nervous,"nervous, sweatdrop",Surprised & Afraid,mild
+expression-gritted-teeth,Gritted Teeth,"gritted teeth, glaring",Angry & Annoyed,intense
+expression-squeezed-eyes,Squeezed Eyes,">_<, squeezed eyes",Comedic & Intense,comedic
+expression-nervous-smile,Nervous Smile,"nervous smile, sweatdrop",Cute & Shy,shy|nervous
+expression-tsurime,Tsurime,"tsurime, sharp eyes",Eyes & Gaze,eyes|intense
+expression-fang-smile,Fang Smile,"smile, fang",Happy & Cheerful,happy|cute
+expression-licking-lips,Licking Lips,"licking lips, tongue",Mouth & Gestures,mouth
+expression-calm,Calm,"calm, relaxed",Neutral & Serious,gentle
+expression-trembling-lips,Trembling Lips,"trembling lips, tearing up",Sad & Crying,sad|gentle
+expression-waking-up,Waking Up,"waking up, sleepy, rubbing eyes",Sleepy & Tired,tired
+expression-evil-grin,Evil Grin,"evil grin, teeth",Smug & Playful,dark|intense
+expression-worried,Worried,"worried, furrowed brow",Surprised & Afraid,sad|nervous
+expression-pout,Pout,"pout, annoyed",Angry & Annoyed,cute|angry
+expression-3,:3,":3, smile",Comedic & Intense,cute|comedic
+expression-sheepish-smile,Sheepish Smile,"sheepish smile, blush",Cute & Shy,cute|awkward
+expression-narrowed-eyes,Narrowed Eyes,narrowed eyes,Eyes & Gaze,eyes|intense
+expression-excited,Excited,"excited, open mouth, sparkling eyes",Happy & Cheerful,happy|energetic
+expression-cheek-puff,Cheek Puff,"puffed cheeks, pout",Mouth & Gestures,cute|mouth
+expression-poker-face,Poker Face,"poker face, expressionless",Neutral & Serious,neutral
+expression-disappointed,Disappointed,"disappointed, downcast eyes",Sad & Crying,sad
+expression-eyes-closed,Eyes Closed,"closed eyes, calm",Sleepy & Tired,calm
+expression-teasing,Teasing,"teasing smile, tongue out",Smug & Playful,playful
+expression-panicking,Panicking,"panicking, sweat, open mouth",Surprised & Afraid,intense|nervous
+expression-frustrated,Frustrated,"frustrated, frown, sweat",Angry & Annoyed,angry|nervous
+expression-d,:D,":d, open mouth, smile",Comedic & Intense,happy|comedic
+expression-looking-away-shyly,Looking Away Shyly,"looking away, shy, blush",Cute & Shy,cute|shy
+expression-rolling-eyes,Rolling Eyes,"rolling eyes, annoyed",Eyes & Gaze,eyes|annoyed
+expression-delighted,Delighted,"delighted, closed eyes, smile",Happy & Cheerful,happy
+expression-upper-teeth,Upper Teeth,"upper teeth, smile",Mouth & Gestures,mouth
+expression-skeptical,Skeptical,"skeptical, raised eyebrow",Neutral & Serious,questioning
+expression-lonely,Lonely,"lonely, sad, distant gaze",Sad & Crying,sad
+expression-dozing,Dozing,"dozing, closed eyes",Sleepy & Tired,tired
+expression-seductive-smile,Seductive Smile,"seductive smile, half-closed eyes",Smug & Playful,confident
+expression-confused,Confused,"confused, raised eyebrow",Surprised & Afraid,questioning
+expression-yelling,Yelling,"yelling, angry, open mouth",Angry & Annoyed,intense|open mouth
+expression-o,:O,":o, open mouth, surprised",Comedic & Intense,surprised|comedic
+expression-covering-face,Covering Face,"covering face, embarrassed, blush",Cute & Shy,cute|shy
+expression-cross-eyed,Cross-Eyed,cross-eyed,Eyes & Gaze,eyes|comedic
+expression-relieved,Relieved,"relieved, light smile, closed eyes",Happy & Cheerful,calm|happy
+expression-clenched-mouth,Clenched Mouth,"clenched mouth, serious",Mouth & Gestures,mouth|intense
+expression-unimpressed,Unimpressed,"unimpressed, half-closed eyes",Neutral & Serious,neutral
+expression-depressed,Depressed,"depressed, empty eyes, frown",Sad & Crying,sad|dark
+expression-confident,Confident,"confident, smile",Smug & Playful,confident
+expression-raised-eyebrow,Raised Eyebrow,"raised eyebrow, skeptical",Surprised & Afraid,questioning
+expression-rage,Rage,"rage, shouting, clenched teeth",Angry & Annoyed,intense
+expression-sweatdrop,Sweatdrop,"sweatdrop, nervous",Comedic & Intense,comedic|nervous
+expression-starry-eyed,Starry-Eyed,"starry eyes, smile",Cute & Shy,cute|excited
+expression-looking-up,Looking Up,looking up,Eyes & Gaze,eyes|gaze
+expression-proud,Proud,"proud, smile",Happy & Cheerful,confident|happy
+expression-drooling,Drooling,"drooling, open mouth",Mouth & Gestures,mouth|comedic
+expression-contemplative,Contemplative,"contemplative, distant gaze",Neutral & Serious,focused
+expression-heartbroken,Heartbroken,"heartbroken, crying, tears",Sad & Crying,sad|intense
+expression-cheeky,Cheeky,"cheeky smile, fang",Smug & Playful,playful|cute
+expression-aghast,Aghast,"aghast, pale, wide eyes",Surprised & Afraid,intense
+expression-looking-down,Looking Down,looking down,Eyes & Gaze,eyes|gaze
+expression-looking-to-the-side,Looking to the Side,looking to the side,Eyes & Gaze,eyes|gaze

@@ -1,0 +1,298 @@
+slug,name,tags,categories,traits
+pose_1792200000000,Arm Support,arm support,Gestures & Arms,arm|support
+pose_1792200000001,Armpits,"armpits, armpit",Gestures & Arms,armpit|armpits
+pose_1792200000002,Arms Behind Back,"arms behind back, hands behind back, arms behind",Gestures & Arms,hands|back|arms
+pose_1792200000003,Arms Crossed,arms crossed,Gestures & Arms,arms|crossed
+pose_1792200000004,Arms Up,"arms up, raised arms, arms above, arms raised, arms above head, hands above head",Gestures & Arms,hands|raised|head|arms
+pose_1792200000005,Caramelldansen,"caramelldansen, caramel dansen",Daily & Miscellaneous,caramel|dansen|caramelldansen
+pose_1792200000006,Finger Gun,finger gun,Gestures & Arms,gun|finger
+pose_1792200000007,Hand On Hip,"hand on hip, hand on waist",Gestures & Arms,hip|hand|waist
+pose_1792200000008,Hands On Another'S Breast,hands on another's breast,Duo & Interaction,hands|breast
+pose_1792200000009,Hands On Hips,"hands on hips, hands on waist, akimbo",Gestures & Arms,hands|akimbo|waist|hips
+pose_1792200000010,Holding,"holding, hold, holding object",Props & Holding,hold|object|holding
+pose_1792200000011,Holding Hands,"holding hands, handholding, hand holding, holding another's hand",Props & Holding,hands|handholding|hand|holding
+pose_1792200000012,Middle Finger,"middle finger, the finger, flipping off",Gestures & Arms,flipping|middle|finger
+pose_1792200000013,Salute,salute,Gestures & Arms,salute
+pose_1792200000014,Shushing,"shushing, shh, shush",Gestures & Arms,shush|shushing|shh
+pose_1792200000015,Spread Arms,spread arms,Gestures & Arms,spread|arms
+pose_1792200000016,Thumbs Up,thumbs up,Gestures & Arms,thumbs
+pose_1792200000017,Undressing,"undressing, undress, stripping, strip",Adjusting & Dressing,strip|stripping|undress|undressing
+pose_1792200000018,V,"v, v sign, peace sign",Gestures & Arms,peace|sign
+pose_1792200000019,Waving,"waving, wave",Gestures & Arms,waving|wave
+pose_1792200000020,Outstretched Arms,outstretched arms,Gestures & Arms,outstretched|arms
+pose_1792200000021,Outstretched Arm,outstretched arm,Gestures & Arms,outstretched|arm
+pose_1792200000022,Outstretched Hand,"outstretched hand, outstretched hands, hands outstretched",Gestures & Arms,hands|outstretched|hand
+pose_1792200000023,Reaching,"reaching, reach",Props & Holding,reach|reaching
+pose_1792200000024,Arm Up,"arm up, arm raised, raised arm, one arm up",Gestures & Arms,raised|arm
+pose_1792200000025,Presenting Armpit,presenting armpit,Props & Holding,presenting|armpit
+pose_1792200000026,Presenting Panties,presenting panties,Props & Holding,presenting|panties
+pose_1792200000027,Arms Behind Head,"arms behind head, hands behind head",Gestures & Arms,hands|head|arms
+pose_1792200000028,Kimono Lift,kimono lift,Adjusting & Dressing,kimono|lift
+pose_1792200000029,Kimono Pull,kimono pull,Adjusting & Dressing,pull|kimono
+pose_1792200000030,Skirt Lift,"skirt lift, skirtlift, skirt up, lifting skirt",Adjusting & Dressing,skirt|skirtlift|lifting|lift
+pose_1792200000031,Shared Food,"shared food, mouth to mouth feeding, mouth-to-mouth feeding",Duo & Interaction,shared|feeding|mouth|food
+pose_1792200000032,Adjusting Hair,adjusting hair,Adjusting & Dressing,hair|adjusting
+pose_1792200000033,Adjusting Legwear,"adjusting legwear, adjusting thighhigh, adjusting pantyhose, adjusting thighhighs",Adjusting & Dressing,legwear|adjusting|pantyhose|thighhigh|thighhighs
+pose_1792200000034,Adjusting Panties,adjusting panties,Adjusting & Dressing,adjusting|panties
+pose_1792200000035,Arm Grab,"arm grab, arm hold, grabbing arm",Props & Holding,hold|grabbing|grab|arm
+pose_1792200000036,Arm Held Back,arm held back,Gestures & Arms,held|back|arm
+pose_1792200000037,Arm Hug,"arm hug, hugging arm",Gestures & Arms,hug|hugging|arm
+pose_1792200000038,Armpit Peek,armpit peek,Gestures & Arms,armpit|peek
+pose_1792200000039,Arms Around Neck,"arms around neck, neck hug",Gestures & Arms,hug|neck|arms
+pose_1792200000040,Arms At Sides,arms at sides,Gestures & Arms,sides|arms
+pose_1792200000041,Beckoning,"beckoning, beckon",Gestures & Arms,beckon|beckoning
+pose_1792200000042,Belly Grab,"belly grab, tummy grab",Props & Holding,tummy|grab|belly
+pose_1792200000043,Bikini Pull,"bikini pull, bikini down",Adjusting & Dressing,pull|bikini
+pose_1792200000044,Skirt Pull,skirt pull,Adjusting & Dressing,skirt|pull
+pose_1792200000045,Caressing Testicles,"caressing testicles, fondling testicles, ball caress",Daily & Miscellaneous,caressing|caress|testicles|ball|fondling
+pose_1792200000046,Carrying Over Shoulder,carrying over shoulder,Daily & Miscellaneous,shoulder|carrying
+pose_1792200000047,Carrying Under Arm,carrying under arm,Gestures & Arms,carrying|arm
+pose_1792200000048,Paw Pose,"paw pose, cat pose, dog pose",Daily & Miscellaneous,dog|paw|cat
+pose_1792200000049,Claw Pose,claw pose,Daily & Miscellaneous,claw
+pose_1792200000050,Clothes Lift,clothes lift,Adjusting & Dressing,clothes|lift
+pose_1792200000051,Clothes Pull,clothes pull,Adjusting & Dressing,clothes|pull
+pose_1792200000052,Bunching Hair,bunching hair,Adjusting & Dressing,hair|bunching
+pose_1792200000053,Convenient Arm,convenient arm,Gestures & Arms,arm|convenient
+pose_1792200000054,Convenient Head,convenient head,Daily & Miscellaneous,head|convenient
+pose_1792200000055,Convenient Leg,convenient leg,Daily & Miscellaneous,leg|convenient
+pose_1792200000056,Crossed Arms,"crossed arms, folded arms, arms folded",Gestures & Arms,folded|arms|crossed
+pose_1792200000057,Cuddling,"cuddling, cuddle, snuggle",Duo & Interaction,snuggle|cuddling|cuddle
+pose_1792200000058,Dress Lift,dress lift,Adjusting & Dressing,dress|lift
+pose_1792200000059,Dress Removed,dress removed,Adjusting & Dressing,removed|dress
+pose_1792200000060,Dual Wielding,"dual wielding, dual wield, double wield",Props & Holding,wielding|wield|double|dual
+pose_1792200000061,Palm,palm,Gestures & Arms,palm
+pose_1792200000062,Feeding,feeding,Props & Holding,feeding
+pose_1792200000063,Fingering Through Clothes,fingering through clothes,Gestures & Arms,clothes|fingering
+pose_1792200000064,Flapping,flapping,Daily & Miscellaneous,flapping
+pose_1792200000065,Glomp,glomp,Duo & Interaction,glomp
+pose_1792200000066,Grabbing,"grabbing, grab",Props & Holding,grab|grabbing
+pose_1792200000067,Guided Breast Grab,guided breast grab,Props & Holding,grab|guided|breast
+pose_1792200000068,Hair Flip,hair flip,Adjusting & Dressing,hair|flip
+pose_1792200000069,Hair Tucking,hair tucking,Adjusting & Dressing,hair|tucking
+pose_1792200000070,Hair Twirling,"hair twirling, hair twirl",Adjusting & Dressing,hair|twirl|twirling
+pose_1792200000071,Hand Between Legs,"hand between legs, hands between legs",Gestures & Arms,hands|hand|legs
+pose_1792200000072,Hand In Hair,hand in hair,Gestures & Arms,hair|hand
+pose_1792200000073,Hand In Panties,"hand in panties, finger in panties",Gestures & Arms,finger|panties|hand
+pose_1792200000074,Hand On Another'S Cheek,hand on another's cheek,Duo & Interaction,cheek|hand
+pose_1792200000075,Hand On Another'S Chest,hand on another's chest,Duo & Interaction,chest|hand
+pose_1792200000076,Hand On Another'S Chin,"hand on another's chin, finger to another's chin",Duo & Interaction,chin|finger|hand
+pose_1792200000077,Hand On Another'S,hand on another's,Duo & Interaction,hand
+pose_1792200000078,Hand On Another'S Stomach,hand on another's stomach,Duo & Interaction,stomach|hand
+pose_1792200000079,Hand On Own Knee,"hand on own knee, hand on knee",Gestures & Arms,knee|hand
+pose_1792200000080,Hand On Own Stomach,"hand on own stomach, hand on belly, hand on own belly, hand on stomach",Gestures & Arms,belly|stomach|hand
+pose_1792200000081,Hand To Own Mouth,"hand to own mouth, hand to mouth, hands to mouth, hands to own mouth, hand to lip, hand on lips",Gestures & Arms,hands|mouth|hand|lips|lip
+pose_1792200000082,Heart Hands,heart hands,Gestures & Arms,hands|heart
+pose_1792200000083,Heart Hands Duo,heart hands duo,Duo & Interaction,hands|heart
+pose_1792200000084,Holding Arrow,holding arrow,Props & Holding,arrow|holding
+pose_1792200000085,Holding Condom,holding condom,Props & Holding,condom|holding
+pose_1792200000086,Holding Panties,holding panties,Props & Holding,panties|holding
+pose_1792200000087,Holding Strap,holding strap,Props & Holding,strap|holding
+pose_1792200000088,Holding Syringe,holding syringe,Props & Holding,syringe|holding
+pose_1792200000089,Holding Underwear,holding underwear,Props & Holding,underwear|holding
+pose_1792200000090,Holding Whip,holding whip,Props & Holding,whip|holding
+pose_1792200000091,Index Finger Raised,"index finger raised, raised finger, finger raised",Gestures & Arms,index|raised|finger
+pose_1792200000092,Lifted By Another,lifted by another,Adjusting & Dressing,lifted
+pose_1792200000093,Lifted By Self,lifted by self,Adjusting & Dressing,self|lifted
+pose_1792200000094,Necktie Grab,"necktie grab, necktie pull, tiegrab, tie grab",Props & Holding,tiegrab|pull|tie|grab|necktie
+pose_1792200000095,Ok Sign,"ok sign, ok",Gestures & Arms,sign
+pose_1792200000096,Own Hands Together,"own hands together, hands together",Gestures & Arms,hands|together
+pose_1792200000097,Rubbing Eyes,"rubbing eyes, eye rub, wiping eyes, rubbing eye",Daily & Miscellaneous,eye|rub|eyes|rubbing|wiping
+pose_1792200000098,Shading Eyes,shading eyes,Daily & Miscellaneous,shading|eyes
+pose_1792200000099,Sheet Grab,"sheet grab, grabbing sheet",Props & Holding,grab|sheet|grabbing
+pose_1792200000100,Shoujo Kitou Chuu,"shoujo kitou-chuu, girls are praying",Gestures & Arms,kitou|shoujo|girls|are|chuu
+pose_1792200000101,Talking On Phone,"talking on phone, on phone",Daily & Miscellaneous,talking|phone
+pose_1792200000102,Through Clothes,through clothes,Daily & Miscellaneous,clothes
+pose_1792200000103,Tying,tying,Daily & Miscellaneous,tying
+pose_1792200000104,Yawning,"yawning, yawn",Daily & Miscellaneous,yawn|yawning
+pose_1792200000105,Drying Hair,drying hair,Adjusting & Dressing,hair|drying
+pose_1792200000106,V Over Eye,v over eye,Gestures & Arms,eye
+pose_1792200000107,Grabbing Another'S Hair,"grabbing another's hair, pulling another's hair, hair pull",Duo & Interaction,hair|pull|pulling|grabbing
+pose_1792200000108,Tying Hair,tying hair,Adjusting & Dressing,tying|hair
+pose_1792200000109,Mimikaki,"mimikaki, ear cleaner",Daily & Miscellaneous,mimikaki|ear|cleaner
+pose_1792200000110,Holding Eyewear,"holding eyewear, holding glasses, holding sunglasses",Props & Holding,sunglasses|eyewear|glasses|holding
+pose_1792200000111,Hand On Ear,hand on ear,Gestures & Arms,ear|hand
+pose_1792200000112,Adjusting Eyewear,"adjusting eyewear, adjusting sunglasses, adjusting glasses",Adjusting & Dressing,glasses|eyewear|adjusting|sunglasses
+pose_1792200000113,Hand On Another'S Head,hand on another's head,Duo & Interaction,hand|head
+pose_1792200000114,Hand On Own Head,hand on own head,Gestures & Arms,hand|head
+pose_1792200000115,Hand On Own Forehead,hand on own forehead,Gestures & Arms,hand|forehead
+pose_1792200000116,Hand On Another'S Face,hand on another's face,Duo & Interaction,face|hand
+pose_1792200000117,Hand On Own Face,"hand on own face, hand to face, hand on face",Gestures & Arms,face|hand
+pose_1792200000118,Hands On Another'S Face,hands on another's face,Duo & Interaction,hands|face
+pose_1792200000119,Hands On Own Face,"hands on own face, hands on face, hands to face",Gestures & Arms,hands|face
+pose_1792200000120,Hand On Own Cheek,"hand on own cheek, hand to cheek, hand on cheek",Gestures & Arms,cheek|hand
+pose_1792200000121,Hand On Headwear,"hand on headwear, hand on hat",Gestures & Arms,hat|hand|headwear
+pose_1792200000122,Hand On Own Chest,"hand on own chest, hand to chest, hand to own chest, hand on chest",Gestures & Arms,chest|hand
+pose_1792200000123,Hand On Another'S Shoulder,hand on another's shoulder,Duo & Interaction,shoulder|hand
+pose_1792200000124,Hand On Own Shoulder,hand on own shoulder,Gestures & Arms,shoulder|hand
+pose_1792200000125,Hand On Own Ass,"hand on own ass, hand on ass",Gestures & Arms,ass|hand
+pose_1792200000126,Hands On Ass,hands on ass,Gestures & Arms,hands|ass
+pose_1792200000127,Hands On Own Knees,"hands on own knees, hands on knees",Gestures & Arms,hands|knees
+pose_1792200000128,Hands On Feet,hands on feet,Gestures & Arms,hands|feet
+pose_1792200000129,Hand On Another'S Hand,hand on another's hand,Duo & Interaction,hand
+pose_1792200000130,Hand In Pocket,hand in pocket,Gestures & Arms,pocket|hand
+pose_1792200000131,Hands In Pockets,hands in pockets,Gestures & Arms,hands|pockets
+pose_1792200000132,Air Quotes,"air quotes, finger quotes",Gestures & Arms,finger|quotes|air
+pose_1792200000133,Bunny Pose,bunny pose,Daily & Miscellaneous,bunny
+pose_1792200000134,Carry Me,"carry me, pick me up",Duo & Interaction,pick|carry
+pose_1792200000135,Clenched Hands,"clenched hands, fists, closed fists, clenched fists",Gestures & Arms,hands|closed|clenched|fists
+pose_1792200000136,Cupping Hands,"cupping hands, cupped hands",Gestures & Arms,cupping|hands|cupped
+pose_1792200000137,Double V,"double v, double peace",Gestures & Arms,peace|double
+pose_1792200000138,Fidgeting,"fidgeting, fidget",Gestures & Arms,fidgeting|fidget
+pose_1792200000139,Finger Counting,finger counting,Gestures & Arms,counting|finger
+pose_1792200000140,Finger Frame,"finger frame, finger camera",Gestures & Arms,camera|finger|frame
+pose_1792200000141,Fist Bump,"fist bump, brofist, fistbump",Gestures & Arms,fist|brofist|fistbump|bump
+pose_1792200000142,Fist In Hand,fist in hand,Gestures & Arms,fist|hand
+pose_1792200000143,Hand Glasses,hand glasses,Gestures & Arms,glasses|hand
+pose_1792200000144,Own Hands Clasped,"own hands clasped, clasped hands, hands clasped",Gestures & Arms,hands|clasped
+pose_1792200000145,Heart Arms,heart arms,Gestures & Arms,heart|arms
+pose_1792200000146,Heart Hands Trio,heart hands trio,Duo & Interaction,hands|heart
+pose_1792200000147,High Five,"high five, highfive",Daily & Miscellaneous,high|five|highfive
+pose_1792200000148,Horns Pose,"horns pose, horn pose",Gestures & Arms,horn|horns
+pose_1792200000149,Noogie,noogie,Daily & Miscellaneous,noogie
+pose_1792200000150,Palm Fist Greeting,palm-fist greeting,Gestures & Arms,fist|palm|greeting
+pose_1792200000151,Palm Fist Tap,palm-fist tap,Gestures & Arms,fist|tap|palm
+pose_1792200000152,Penetration Gesture,penetration gesture,Daily & Miscellaneous,penetration
+pose_1792200000153,Pinky Swear,pinky swear,Daily & Miscellaneous,pinky|swear
+pose_1792200000154,Shadow Puppet,shadow puppet,Daily & Miscellaneous,shadow|puppet
+pose_1792200000155,Tsuki Ni Kawatte Oshioki Yo,"tsuki ni kawatte oshioki yo, in the name of the moon",Daily & Miscellaneous,kawatte|oshioki|tsuki|name|moon
+pose_1792200000156,Steepled Fingers,steepled fingers,Gestures & Arms,steepled|fingers
+pose_1792200000157,Akanbe,"akanbe, eyelid pull",Daily & Miscellaneous,akanbe|eyelid|pull
+pose_1792200000158,Slit Throat (Gesture),"slit throat (gesture), throat-slitting gesture, cutthroat gesture",Daily & Miscellaneous,(gesture)|slit|throat|slitting|cutthroat
+pose_1792200000159,Pinky Out,"pinky out, raised pinky, extended pinky",Daily & Miscellaneous,pinky|raised|extended
+pose_1792200000160,Pointing,pointing,Gestures & Arms,pointing
+pose_1792200000161,Pointing At Self,pointing at self,Gestures & Arms,self|pointing
+pose_1792200000162,Pointing At Viewer,"pointing at viewer, pov pointing",Gestures & Arms,viewer|pov|pointing
+pose_1792200000163,Pointing Down,pointing down,Gestures & Arms,pointing
+pose_1792200000164,Pointing Forward,pointing forward,Gestures & Arms,forward|pointing
+pose_1792200000165,Pointing Up,"pointing up, pointing skyward, pointing to the sky",Gestures & Arms,skyward|sky|pointing
+pose_1792200000166,Kamina Pose,kamina pose,Daily & Miscellaneous,kamina
+pose_1792200000167,Saturday Night Fever,"saturday night fever, disco pose",Daily & Miscellaneous,disco|fever|saturday|night
+pose_1792200000168,Thumbs Down,thumbs down,Gestures & Arms,thumbs
+pose_1792200000169,\N/,\n/,Gestures & Arms,\n/
+pose_1792200000170,Crossed Fingers,crossed fingers,Gestures & Arms,fingers|crossed
+pose_1792200000171,Fox Shadow Puppet,"fox shadow puppet, fox hand sign",Daily & Miscellaneous,fox|puppet|hand|shadow|sign
+pose_1792200000172,Finger Heart,finger heart,Gestures & Arms,heart|finger
+pose_1792200000173,Inward V,inward v,Daily & Miscellaneous,inward
+pose_1792200000174,Shaka Sign,shaka sign,Daily & Miscellaneous,shaka|sign
+pose_1792200000175,Two Finger Salute,two-finger salute,Gestures & Arms,salute|finger
+pose_1792200000176,\M/,\m/,Gestures & Arms,\m/
+pose_1792200000177,Middle W,middle w,Daily & Miscellaneous,middle
+pose_1792200000178,Money Gesture,money gesture,Daily & Miscellaneous,money
+pose_1792200000179,\||/,"\||/, open \m/",Gestures & Arms,\m/|\||/|open
+pose_1792200000180,Open Hand,open hand,Gestures & Arms,open|hand
+pose_1792200000181,Ohikaenasutte,ohikaenasutte,Daily & Miscellaneous,ohikaenasutte
+pose_1792200000182,Spread Fingers,spread fingers,Gestures & Arms,fingers|spread
+pose_1792200000183,Straight Arm Salute,"straight-arm salute, roman salute, nazi salute",Gestures & Arms,salute|roman|arm|nazi|straight
+pose_1792200000184,Vulcan Salute,vulcan salute,Gestures & Arms,salute|vulcan
+pose_1792200000185,Clenched Hand,"clenched hand, clenched fist, fist, closed fist",Gestures & Arms,fist|closed|clenched|hand
+pose_1792200000186,Fig Sign,"fig sign, hand fig, fig gesture, dulya, mano fico",Daily & Miscellaneous,dulya|hand|fig|fico|sign
+pose_1792200000187,Power Fist,power fist,Gestures & Arms,fist|power
+pose_1792200000188,Raised Fist,"raised fist, air punch",Gestures & Arms,fist|raised|punch|air
+pose_1792200000189,Stroking Own Chin,"stroking own chin, chin stroking, stroking chin",Daily & Miscellaneous,stroking|chin
+pose_1792200000190,Cunnilingus Gesture,cunnilingus gesture,Daily & Miscellaneous,cunnilingus
+pose_1792200000191,Fellatio Gesture,fellatio gesture,Daily & Miscellaneous,fellatio
+pose_1792200000192,Handjob Gesture,handjob gesture,Gestures & Arms,handjob
+pose_1792200000193,Hat Tip,hat tip,Daily & Miscellaneous,hat|tip
+pose_1792200000194,Shocker (Gesture),shocker (gesture),Daily & Miscellaneous,(gesture)|shocker
+pose_1792200000195,V Over Mouth,v over mouth,Gestures & Arms,mouth
+pose_1792200000196,W,w,Gestures & Arms,
+pose_1792200000197,Air Guitar,air guitar,Daily & Miscellaneous,guitar|air
+pose_1792200000198,Curtsey,"curtsey, curtsy, curtsie",Daily & Miscellaneous,curtsie|curtsey|curtsy
+pose_1792200000199,Heart Tail,"heart tail, heart tails",Daily & Miscellaneous,heart|tails|tail
+pose_1792200000200,Heart Tail Duo,heart tail duo,Duo & Interaction,heart|tail
+pose_1792200000201,Kuji In,"kuji-in, hand seal",Daily & Miscellaneous,kuji|hand|seal
+pose_1792200000202,Shrugging,shrugging,Daily & Miscellaneous,shrugging
+pose_1792200000203,Toe Point,toe-point,Daily & Miscellaneous,point|toe
+pose_1792200000204,Victory Pose,victory pose,Daily & Miscellaneous,victory
+pose_1792200000205,Orchid Fingers,orchid fingers,Gestures & Arms,fingers|orchid
+pose_1792200000206,Holding Flower,holding flower,Props & Holding,flower|holding
+pose_1792200000207,Smelling Flower,smelling flower,Daily & Miscellaneous,flower|smelling
+pose_1792200000208,Dress Tug,dress tug,Adjusting & Dressing,tug|dress
+pose_1792200000209,Open Dress,open dress,Daily & Miscellaneous,open|dress
+pose_1792200000210,Dress Pull,dress pull,Adjusting & Dressing,pull|dress
+pose_1792200000211,All Fours,"all fours, hands and knees, all-fours, on all fours",Lying & Prone,hands|fours|knees|all
+pose_1792200000212,Arched Back,arched back,Lying & Prone,back|arched
+pose_1792200000213,Bent Over,"bent over, bent-over, bending over, bend over",Daily & Miscellaneous,bend|bent|bending
+pose_1792200000214,Crossed Legs,"crossed legs, crossed legs (sitting), crossed legs (standing), crossed legs (lying)",Sitting Poses,(sitting)|(standing)|legs|crossed|(lying)
+pose_1792200000215,Fetal Position,fetal position,Lying & Prone,position|fetal
+pose_1792200000216,Fighting Stance,"fighting stance, battle stance",Standing & Dynamic,fighting|battle|stance
+pose_1792200000217,Hugging Own Legs,"hugging own legs, leg hug, knee hug, hugging legs, hugging knees",Duo & Interaction,hugging|leg|legs|hug|knee
+pose_1792200000218,Indian Style,"indian style, agura",Sitting Poses,indian|style|agura
+pose_1792200000219,Kneeling,"kneeling, on knees",Sitting Poses,kneeling|knees
+pose_1792200000220,Leaning Forward,leaning forward,Daily & Miscellaneous,forward|leaning
+pose_1792200000221,Leg Lift,"leg lift, raised leg, leg raise, leg raised",Adjusting & Dressing,raise|raised|lift|leg
+pose_1792200000222,Legs Up,legs up,Daily & Miscellaneous,legs
+pose_1792200000223,Lying,"lying, lying down, laying down, laying",Lying & Prone,lying|laying
+pose_1792200000224,On Stomach,"on stomach, lying on stomach, prone, on belly, on front",Lying & Prone,prone|front|stomach|lying|belly
+pose_1792200000225,Princess Carry,"princess carry, bridal carry",Duo & Interaction,princess|bridal|carry
+pose_1792200000226,Seiza,"seiza, sitting on knees",Sitting Poses,seiza|knees|sitting
+pose_1792200000227,Sitting,"sitting, sit, sitting down",Sitting Poses,sit|sitting
+pose_1792200000228,Spread Legs,"spread legs, open legs, spread leg",Daily & Miscellaneous,open|spread|legs|leg
+pose_1792200000229,Squatting,"squatting, squat, crouched, crouch, crouching",Sitting Poses,squatting|crouching|crouch|crouched|squat
+pose_1792200000230,Top Down Bottom Up,"top-down bottom-up, ass-up head-down, face down ass up",Daily & Miscellaneous,face|ass|head|top|bottom
+pose_1792200000231,Wariza,"wariza, w sitting, w-sitting, w-legs, w legs",Sitting Poses,wariza|sitting|legs
+pose_1792200000232,Yokozuwari,yokozuwari,Sitting Poses,yokozuwari
+pose_1792200000233,Zombie Pose,zombie pose,Daily & Miscellaneous,zombie
+pose_1792200000234,Humpbacked,humpbacked,Daily & Miscellaneous,humpbacked
+pose_1792200000235,Back To Back,back-to-back,Daily & Miscellaneous,back
+pose_1792200000236,Head Back,head back,Daily & Miscellaneous,back|head
+pose_1792200000237,Bowing,bowing,Daily & Miscellaneous,bowing
+pose_1792200000238,Leaning,leaning,Daily & Miscellaneous,leaning
+pose_1792200000239,Leaning Back,leaning back,Daily & Miscellaneous,back|leaning
+pose_1792200000240,Leaning To The Side,leaning to the side,Daily & Miscellaneous,side|leaning
+pose_1792200000241,On Back,"on back, lying on back, supine",Lying & Prone,lying|back|supine
+pose_1792200000242,On Side,"on side, lying on side",Lying & Prone,lying|side
+pose_1792200000243,Reclining,"reclining, recline",Daily & Miscellaneous,recline|reclining
+pose_1792200000244,Sitting On Lap,"sitting on lap, sitting in lap",Duo & Interaction,lap|sitting
+pose_1792200000245,Straddling,"straddling, straddle",Daily & Miscellaneous,straddling|straddle
+pose_1792200000246,The Pose,the pose,Daily & Miscellaneous,
+pose_1792200000247,Head Rest,"head rest, chin rest",Daily & Miscellaneous,chin|rest|head
+pose_1792200000248,Head Tilt,head tilt,Daily & Miscellaneous,head|tilt
+pose_1792200000249,Head Down,head down,Daily & Miscellaneous,head
+pose_1792200000250,One Knee,"one knee, kneeling on one leg",Sitting Poses,kneeling|knee|leg
+pose_1792200000251,Butterfly Sitting,"butterfly sitting, butterfly pose",Sitting Poses,butterfly|sitting
+pose_1792200000252,Figure Four Sitting,figure four sitting,Sitting Poses,figure|four|sitting
+pose_1792200000253,Lotus Position,lotus position,Sitting Poses,lotus|position
+pose_1792200000254,Sitting On Person,"sitting on person, sitting on",Duo & Interaction,sitting
+pose_1792200000255,Thigh Straddling,"thigh straddling, thigh straddle",Daily & Miscellaneous,straddling|straddle|thigh
+pose_1792200000256,Upright Straddle,upright straddle,Daily & Miscellaneous,straddle|upright
+pose_1792200000257,Standing,standing,Standing & Dynamic,standing
+pose_1792200000258,Legs Apart,legs apart,Daily & Miscellaneous,apart|legs
+pose_1792200000259,Standing On One Leg,"standing on one leg, on one foot, standing on one foot, on one leg",Standing & Dynamic,standing|foot|leg
+pose_1792200000260,Balancing,"balancing, balance",Standing & Dynamic,balancing|balance
+pose_1792200000261,Crawling,crawling,Standing & Dynamic,crawling
+pose_1792200000262,Jumping,"jumping, jump",Standing & Dynamic,jumping|jump
+pose_1792200000263,Running,"running, run",Standing & Dynamic,run|running
+pose_1792200000264,Walking,walking,Standing & Dynamic,walking
+pose_1792200000265,Wallwalking,wallwalking,Standing & Dynamic,wallwalking
+pose_1792200000266,Prostration,"prostration, orz",Daily & Miscellaneous,prostration|orz
+pose_1792200000267,Chest Stand,chest stand,Lying & Prone,stand|chest
+pose_1792200000268,Cowering,cowering,Daily & Miscellaneous,cowering
+pose_1792200000269,Crucifixion,crucifixion,Daily & Miscellaneous,crucifixion
+pose_1792200000270,Faceplant,faceplant,Daily & Miscellaneous,faceplant
+pose_1792200000271,Battoujutsu Stance,battoujutsu stance,Standing & Dynamic,stance|battoujutsu
+pose_1792200000272,Full Scorpion,full scorpion,Daily & Miscellaneous,full|scorpion
+pose_1792200000273,Stretching,"stretching, stretch",Daily & Miscellaneous,stretch|stretching
+pose_1792200000274,Superhero Landing,"superhero landing, three-point landing",Standing & Dynamic,point|landing|superhero
+pose_1792200000275,Handstand,"handstand, standing on hands",Standing & Dynamic,hands|standing|handstand
+pose_1792200000276,Headstand,headstand,Standing & Dynamic,headstand
+pose_1792200000277,Yoga,yoga,Daily & Miscellaneous,yoga
+pose_1792200000278,Scorpion Pose,scorpion pose,Daily & Miscellaneous,scorpion
+pose_1792200000279,Slouching,slouching,Daily & Miscellaneous,slouching
+pose_1792200000280,Twisted Torso,twisted torso,Daily & Miscellaneous,torso|twisted
+pose_1792200000281,Crossed Ankles,crossed ankles,Daily & Miscellaneous,ankles|crossed
+pose_1792200000282,Folded,folded,Daily & Miscellaneous,folded
+pose_1792200000283,Leg Up,"leg up, one leg raised",Daily & Miscellaneous,raised|leg
+pose_1792200000284,Knees To Chest,"knees to chest, knees on chest, knees-on-chest",Daily & Miscellaneous,chest|knees
+pose_1792200000285,Legs Over Head,legs over head,Daily & Miscellaneous,head|legs
+pose_1792200000286,Outstretched Leg,outstretched leg,Daily & Miscellaneous,outstretched|leg
+pose_1792200000287,Split,"split, splits",Daily & Miscellaneous,split|splits
+pose_1792200000288,Pigeon Pose,pigeon pose,Daily & Miscellaneous,pigeon
+pose_1792200000289,Standing Split,standing split,Standing & Dynamic,standing|split
+pose_1792200000290,Watson Cross,watson cross,Daily & Miscellaneous,watson|cross
+pose_1792200000291,Arm Around Neck,arm around neck,Gestures & Arms,neck|arm
+pose_1792200000292,Hand On Another'S Neck,hand on another's neck,Duo & Interaction,neck|hand
+pose_1792200000293,Hand On Own Neck,hand on own neck,Gestures & Arms,neck|hand
+pose_1792200000294,Neck Biting,"neck biting, neck bite",Daily & Miscellaneous,bite|biting|neck
+pose_1792200000295,Necking,necking,Daily & Miscellaneous,necking
+pose_1792200000296,Kissing Neck,kissing neck,Daily & Miscellaneous,kissing|neck

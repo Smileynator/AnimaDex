@@ -66,14 +66,11 @@ def _make_worker(job):
 def build_all_for_mode(cfg: Config, mode: str) -> int:
     """Process every full image in cfg's `<mode>_dir/images` that does
     not yet have a thumb. Returns count built."""
-    if mode not in ('characters', 'artists'):
+    if mode not in ('characters', 'artists', *db.KINDS):
         raise ValueError(f'unknown mode {mode!r}')
-    images_dir = os.path.join(
-        cfg.paths.characters_dir if mode == 'characters'
-        else cfg.paths.artists_dir, 'images')
-    thumbs_dir = os.path.join(
-        cfg.paths.characters_dir if mode == 'characters'
-        else cfg.paths.artists_dir, 'thumbs')
+    base = getattr(cfg.paths, f'{mode}_dir')
+    images_dir = os.path.join(base, 'images')
+    thumbs_dir = os.path.join(base, 'thumbs')
     if not os.path.isdir(images_dir):
         print(f'  [{mode}] images dir missing: {images_dir}')
         return 0

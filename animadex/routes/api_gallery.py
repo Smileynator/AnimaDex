@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+from functools import partial
+
 from flask import Blueprint, abort, current_app, g, jsonify, request
 
 from .. import db
 from ..images import (serialize_character, serialize_artist,
-                      serialize_copyright)
+                      serialize_copyright, serialize_kind)
 
 api = Blueprint('api_gallery', __name__)
 
@@ -28,6 +30,16 @@ DATASETS = {
         'serialize': serialize_artist,
     },
 }
+
+
+for _kind in db.KINDS:
+    DATASETS[_kind] = {
+        'facets':    db.KIND_FACETS,
+        'search':    partial(db.search_kind, _kind),
+        'facet':     partial(db.kind_facet_values, _kind),
+        'count':     partial(db.count_kind, _kind),
+        'serialize': partial(serialize_kind, _kind),
+    }
 
 
 def _api_cache_header(resp):
@@ -74,6 +86,8 @@ def api_search(mode):
     filters = {f: set(args.getlist(f)) for f in plumb['facets']}
     if args.get('loras'):
         filters['loras'] = True
+    if 'favs' in args:                  # "only my favourites" view
+        filters['slugs'] = {s for s in args['favs'].split(',')[:500] if s}
     total, rows = plumb['search'](
         g.db,
         q=args.get('q', '').strip(),

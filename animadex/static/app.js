@@ -11,9 +11,29 @@ const MODES = {
   },
   artists: {
     noun: 'artist',
-    facets: ['artist', 'score', 'category'],
+    facets: ['artist', 'category'],
     placeholder: n => `Search ${n} artists by name…`,
     countLabel: 'Image Count',
+  },
+  poses: {
+    noun: 'pose', kind: true, facets: ['category'],
+    placeholder: n => `Search ${n} poses by name or tag…`,
+    countLabel: 'Default',
+  },
+  clothing: {
+    noun: 'outfit', kind: true, facets: ['category'],
+    placeholder: n => `Search ${n} outfits by name or tag…`,
+    countLabel: 'Default',
+  },
+  backgrounds: {
+    noun: 'background', kind: true, facets: ['category'],
+    placeholder: n => `Search ${n} backgrounds by name or tag…`,
+    countLabel: 'Default',
+  },
+  expressions: {
+    noun: 'expression', kind: true, facets: ['category'],
+    placeholder: n => `Search ${n} expressions by name or tag…`,
+    countLabel: 'Default',
   },
   copyrights: {
     noun: 'copyright',
@@ -22,7 +42,7 @@ const MODES = {
     countLabel: 'Character Count',
   },
 };
-const DEFAULT_OPEN = new Set();   // every facet group starts collapsed
+const DEFAULT_OPEN = new Set();   // extra groups open by default (the first one always is)
 const DEV = window.ANIMADEX_DEV === true;   // run: python app.py --dev
 const FACET_LABELS = {
   character:'Character', copyright:'Series', hair_color:'Hair',
@@ -49,9 +69,33 @@ const state = {
   regenMode: false,           // dev mode: character regenerate toggle
   regenning: new Set(),       // dev mode: slugs regenerating in background
   lorasOnly: false,           // characters: only those with a CivitAI LoRA
+  favsOnly: false,            // show only this browser's favourites
 };
 
 const $ = s => document.querySelector(s);
+
+/* ===== favourites (stored in this browser only) ===================== */
+const _favMem = {};
+function favSet(mode){
+  if (_favMem[mode]) return _favMem[mode];
+  let arr = [];
+  try { arr = JSON.parse(localStorage.getItem('animadex:favs:' + mode)
+                         || '[]'); } catch (e){}
+  return (_favMem[mode] = new Set(Array.isArray(arr) ? arr : []));
+}
+function saveFavs(mode){
+  try { localStorage.setItem('animadex:favs:' + mode,
+          JSON.stringify([...favSet(mode)])); } catch (e){}
+}
+const favsEnabled = mode => !!MODES[mode] && mode !== 'copyrights';
+function syncFavsToggle(){
+  const btn = $('#favs-toggle');
+  if (!btn) return;
+  btn.hidden = !favsEnabled(state.mode);
+  btn.classList.toggle('on', state.favsOnly);
+  $('#favs-count').textContent = favsEnabled(state.mode)
+    ? '(' + favSet(state.mode).size + ')' : '';
+}
 const gallery    = $('#gallery');
 const statusEl   = $('#status');
 const pagerEl    = $('#pager');
@@ -59,7 +103,6 @@ const facetsEl   = $('#facets');
 const chipsEl    = $('#chips');
 const resultEl   = $('#resultcount');
 const clearBtn   = $('#clearall');
-const browseMenu = $('#browsemenu');
 
 const facetOf = () => MODES[state.mode].facets;
 const apiURL  = path => '/api/' + state.mode + path;
@@ -114,6 +157,20 @@ async function copyText(text, note){
   toast(note);
 }
 
+/* ===== Danbooru tag links (poses / expressions) ===================== */
+/* Each tag becomes its own link: free Danbooru accounts can only search two
+   tags at once, and entries that list several tags list *synonyms* of one
+   idea, so one combined search would mostly come up empty. */
+const DANBOORU = 'https://danbooru.donmai.us';
+const DANBOORU_MODES = new Set(['poses', 'expressions']);
+function dbTag(t){
+  t = (t || '').trim().toLowerCase();
+  if (!t || /:\d/.test(t) || /^\(.*\)$/.test(t)) return '';  // weighted / grouped
+  return t.replace(/\s+/g, '_');
+}
+const dbPosts = t => `${DANBOORU}/posts?tags=${encodeURIComponent(t)}`;
+const dbWiki  = t => `${DANBOORU}/wiki_pages/${encodeURIComponent(t)}`;
+
 /* ===== tiles ======================================================== */
 function tileHTML(c){
   const mode = state.mode;
@@ -157,7 +214,36 @@ function tileHTML(c){
                              : '';
 
   let overlay, meta;
-  if (mode === 'artists'){
+  if (MODES[mode].kind){
+    let dbTop = top, dbRow = '';
+    if (DANBOORU_MODES.has(mode)){
+      const ts = c.tags.map(dbTag).filter(Boolean);
+      if (ts.length){
+        dbTop = `<div class="ov-top">${buttons.join('')}
+          <a class="actbtn" href="${dbPosts(ts[0])}" target="_blank"
+             rel="noopener"><span class="ic">↗</span> Danbooru</a></div>`;
+        dbRow = `<div class="ov-label">Search on Danbooru · ${ts.length}</div>
+          <div class="ov-dblinks">${ts.map(t => `<a class="dbtag"
+            href="${dbPosts(t)}" target="_blank" rel="noopener"
+            title="Search Danbooru for ${esc(t)}">${esc(t.replace(/_/g, ' '))}</a>`
+          ).join('')}<a class="dbtag wiki" href="${dbWiki(ts[0])}"
+            target="_blank" rel="noopener"
+            title="Danbooru wiki page for ${esc(ts[0])}">wiki ↗</a></div>`;
+      }
+    }
+    overlay = `
+      <div class="ov-scroll">
+        <div class="ov-label">Tags</div>
+        <div class="ov-trigger">${esc(c.tags.join(', '))}</div>
+        ${dbRow}
+      </div>
+      <div class="ov-actions">
+        ${dbTop}
+        <button class="copybtn" data-copy="trigger">
+          <span class="ic">⧉</span> Copy tags</button>
+      </div>`;
+    meta = `<div class="name" title="${esc(c.name)}">${esc(c.name)}</div>`;
+  } else if (mode === 'artists'){
     overlay = `
       <div class="ov-scroll">
         <div class="ov-label">Artist tag</div>
@@ -168,12 +254,7 @@ function tileHTML(c){
         <button class="copybtn" data-copy="trigger">
           <span class="ic">⧉</span> Copy @artist</button>
       </div>`;
-    const scoreBadge = c.score != null
-      ? `<span class="scorebadge"><i>SCORE</i> ` +
-        `${Math.round(c.score * 100)}%</span>`
-      : '';
-    meta = `<div class="name" title="${esc(c.name)}">${esc(c.name)}</div>
-      ${scoreBadge}`;
+    meta = `<div class="name" title="${esc(c.name)}">${esc(c.name)}</div>`;
   } else {
     const tags = c.tags.map(t => `<span class="tag">${esc(t)}</span>`)
                        .join('');
@@ -203,18 +284,23 @@ function tileHTML(c){
          title="${esc(c.copyright_name)}">${esc(c.copyright_name)}</a>`;
   }
 
-  const loraCap = (mode === 'characters' && c.loras && c.loras.length)
-    ? '<span class="lora-cap">+ LORA</span>' : '';
-  return `<article class="tile" data-slug="${esc(c.slug)}"
+  const loraCap = '';               // LoRA capsule is not used
+  const isFav = favSet(mode).has(c.slug);
+  const favBtn = `<button type="button" class="favbtn${isFav ? ' on' : ''}"
+    aria-pressed="${isFav}" title="${isFav ? 'Remove from' : 'Add to'} favorites"
+    aria-label="Toggle favorite">${isFav ? '♥' : '♡'}</button>`;
+  return `<article class="tile" data-slug="${esc(c.slug)}"${
+                   c.custom ? ' data-custom="1"' : ''}
                    data-img-url="${esc(c.img_url || '')}">
     <div class="thumb">
       ${ph}${shot}
       <div class="tbadges">
-        ${loraCap}<div class="badge"><i>▲</i> ${fmt(c.count)}</div>
+        ${loraCap}${c.count != null
+          ? `<div class="badge"><i>▲</i> ${fmt(c.count)}</div>` : ''}
       </div>
       <div class="overlay">${overlay}</div>
     </div>
-    <div class="meta">${meta}</div>
+    <div class="meta has-fav">${meta}${favBtn}</div>
   </article>`;
 }
 
@@ -239,6 +325,8 @@ function buildParams(page){
   for (const f of facetOf())
     for (const v of state.filters[f]) p.append(f, v);
   if (state.lorasOnly) p.set('loras', '1');
+  if (state.favsOnly && favsEnabled(state.mode))
+    p.set('favs', [...favSet(state.mode)].slice(0, 400).join(','));
   return p;
 }
 
@@ -254,6 +342,7 @@ function urlFor(page){
   for (const f of facetOf())
     for (const v of state.filters[f]) p.append(f, v);
   if (state.lorasOnly) p.set('loras', '1');
+  if (state.favsOnly && favsEnabled(state.mode)) p.set('favonly', '1');
   const qs = p.toString();
   return location.pathname + (qs ? '?' + qs : '');
 }
@@ -264,13 +353,9 @@ function syncURL(page, push){
   else history.replaceState({}, '', url);
 }
 
-/* the Score sort option exists only for the Artists view */
 function syncSortControls(){
-  if (state.sort === 'score' && state.mode !== 'artists')
-    state.sort = 'count';
+  syncFavsToggle();
   const sortEl = $('#sort');
-  sortEl.querySelector('[data-sort="score"]').hidden =
-    state.mode !== 'artists';
   sortEl.querySelectorAll('button').forEach(b =>
     b.classList.toggle('on', b.dataset.sort === state.sort));
 }
@@ -282,11 +367,11 @@ function applyURL(){
   state.mode = MODES[mode] ? mode : 'characters';
   state.q = p.get('q') || '';
   const sortParam = p.get('sort');
-  state.sort = (sortParam === 'az' || sortParam === 'score'
-                || sortParam === 'random') ? sortParam : 'count';
+  state.sort = (sortParam === 'az' || sortParam === 'random') ? sortParam : 'count';
   const seedParam = parseInt(p.get('seed'), 10);
   state.seed = (state.sort === 'random' && seedParam > 0) ? seedParam : null;
   state.lorasOnly = p.get('loras') === '1';
+  state.favsOnly = p.get('favonly') === '1';
   state.filters = freshFilters(state.mode);
   state.labels = {};
   for (const f of facetOf()){
@@ -300,8 +385,6 @@ function applyURL(){
   $('#q').value = state.q;
   $('#modeswitch').querySelectorAll('button').forEach(b =>
     b.classList.toggle('on', b.dataset.mode === state.mode));
-  browseMenu.querySelectorAll('[data-browse]').forEach(b =>
-    b.classList.toggle('on', b.dataset.browse === state.mode));
   syncSortControls();
   document.body.classList.toggle('no-sidebar', facetOf().length === 0);
 
@@ -331,8 +414,6 @@ async function runSearch(page){
     applyTagState();
     applyRegenState();
     loraData = {};
-    for (const c of data.results)
-      if (c.loras && c.loras.length) loraData[c.slug] = c.loras;
     hideLoraPanel();
     state.total = data.total;
     state.pages = data.pages;
@@ -341,7 +422,11 @@ async function runSearch(page){
       `<b>${data.total.toLocaleString()}</b> ${noun}` +
       (data.total === 1 ? '' : 's') +
       (data.pages > 1 ? ` · page ${page} of ${data.pages}` : '');
-    statusEl.innerHTML = data.total === 0
+    statusEl.innerHTML = data.total === 0 && state.favsOnly
+      ? `<div class="big">♡</div>
+         <div class="t1">No favorites yet</div>
+         <div class="t2">Click the ♥ on a tile to save it here.</div>`
+      : data.total === 0
       ? `<div class="big">⊘</div>
          <div class="t1">No ${noun}s match</div>
          <div class="t2">Try a different search or clear some filters.</div>`
@@ -443,8 +528,8 @@ function renderOptions(name, values, total){
   if (labelChanged) refreshChips();
 }
 
-function buildFacetGroup(name, def){
-  const open = DEFAULT_OPEN.has(name);
+function buildFacetGroup(name, def, first){
+  const open = !!first || DEFAULT_OPEN.has(name);
   // A search box only helps when there are more values than are shown
   // (Character / Copyright / Artist). The small trait facets list
   // everything already, so they get no box.
@@ -500,15 +585,18 @@ async function loadFacets(){
   facetLists = {};
   facetHints = {};
   const data = await (await fetch(apiURL('/facets'))).json();
+  let firstGroup = true;
   for (const name of facetOf())
-    if (data.facets[name]) buildFacetGroup(name, data.facets[name]);
+    if (data.facets[name]){
+      buildFacetGroup(name, data.facets[name], firstGroup);
+      firstGroup = false;
+    }
   $('#q').placeholder = MODES[state.mode].placeholder(
     (data.total || 0).toLocaleString());
   $('#sort').querySelector('[data-sort="count"]').textContent =
     MODES[state.mode].countLabel;
-  $('#artist-note').hidden = state.mode !== 'artists';
   const lf = $('#loras-filter');
-  lf.hidden = state.mode !== 'characters';
+  lf.hidden = true;                 // LoRA filter is not used
   $('#loras-only').checked = state.lorasOnly;
   lf.classList.toggle('on', state.lorasOnly);
   if (DEV){
@@ -531,12 +619,14 @@ function refreshChips(){
       count++;
       chips.push(`<span class="achip" data-facet="${f}"
         data-value="${esc(v)}">
-        <span class="cat">${FACET_LABELS[f]}</span>
+        <span class="cat">${MODES[state.mode].kind
+          ? 'Category' : FACET_LABELS[f]}</span>
         ${esc(state.labels[v] || v)}<span class="x">✕</span></span>`);
     }
   }
   chipsEl.innerHTML = chips.join('');
-  clearBtn.hidden = count === 0 && !state.q && !state.lorasOnly;
+  clearBtn.hidden = count === 0 && !state.q && !state.lorasOnly &&
+                    !state.favsOnly;
 
   for (const f of facetOf()){
     const b = document.querySelector(`[data-count="${f}"]`);
@@ -620,14 +710,13 @@ function switchMode(mode, preset){
   state.filters = freshFilters(mode);
   state.labels = {};
   state.lorasOnly = false;
+  state.favsOnly = false;
   if (preset){                          // pre-apply a filter (e.g. series)
     state.filters[preset.facet] = new Set([preset.value]);
     state.labels[preset.value] = preset.label;
   }
   $('#modeswitch').querySelectorAll('button').forEach(b =>
     b.classList.toggle('on', b.dataset.mode === mode));
-  browseMenu.querySelectorAll('[data-browse]').forEach(b =>
-    b.classList.toggle('on', b.dataset.browse === mode));
   document.body.classList.toggle('no-sidebar',
     MODES[mode].facets.length === 0);
   syncSortControls();
@@ -879,7 +968,7 @@ function openLoraPanel(tile){
   loraPanel.innerHTML =
     '<div class="lora-head">AVAILABLE ON CIVITAI</div>' +
     '<div class="lora-list">' + loras.map(loraItemHTML).join('') + '</div>' +
-    '<div class="lora-foot">ANIMADEX is not endorsed by CivitAI</div>';
+    '<div class="lora-foot">ANIMA2.9BDEX is not endorsed by CivitAI</div>';
   loraPanel.classList.remove('on-left');
 
   const r = tile.getBoundingClientRect();
@@ -920,43 +1009,8 @@ loraPanel.addEventListener('mouseover', () => clearTimeout(loraHideTimer));
 loraPanel.addEventListener('mouseout', scheduleHideLora);
 window.addEventListener('scroll', hideLoraPanel, { passive: true });
 
-if (DEV){
-  $('#lora-sync-btn').addEventListener('click', async () => {
-    const btn = $('#lora-sync-btn'), label = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Syncing…';
-    try {
-      const res = await fetch('/api/dev/sync-loras', { method: 'POST' });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok)
-        throw new Error(data.message || ('HTTP ' + res.status));
-      toast('LoRAs synced — ' + (data.message || 'done'));
-      runSearch(state.page);
-    } catch (e){
-      toast('LoRA sync failed: ' + e.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = label;
-    }
-  });
-}
 
 /* ===== events ======================================================= */
-// "Browse by" dropdown
-browseMenu.querySelector('.navmenu-btn').addEventListener('click', e => {
-  e.stopPropagation();
-  browseMenu.classList.toggle('open');
-});
-browseMenu.addEventListener('click', e => {
-  const item = e.target.closest('[data-browse]');
-  if (!item) return;
-  browseMenu.classList.remove('open');
-  switchMode(item.dataset.browse);
-});
-document.addEventListener('click', e => {
-  if (!browseMenu.contains(e.target)) browseMenu.classList.remove('open');
-});
-
 // dataset toggle
 $('#modeswitch').addEventListener('click', e => {
   const btn = e.target.closest('button');
@@ -1046,6 +1100,8 @@ clearBtn.addEventListener('click', () => {
   $('#q').value = '';
   state.filters = freshFilters(state.mode);
   state.lorasOnly = false;
+  state.favsOnly = false;
+  syncFavsToggle();
   $('#loras-only').checked = false;
   $('#loras-filter').classList.remove('on');
   facetsEl.querySelectorAll('input:checked').forEach(b => {
@@ -1093,10 +1149,32 @@ $('#sort').addEventListener('click', e => {
   go(1);
 });
 
+$('#favs-toggle').addEventListener('click', () => {
+  state.favsOnly = !state.favsOnly;
+  syncFavsToggle();
+  refreshChips();
+  go(1);
+});
+
 // gallery: browse to a series, preview, search a tag, filter, or copy
 gallery.addEventListener('click', e => {
   const tile = e.target.closest('.tile');
   if (!tile) return;
+
+  const fav = e.target.closest('.favbtn');
+  if (fav){
+    const set = favSet(state.mode), slug = tile.dataset.slug;
+    const on = !set.has(slug);
+    if (on) set.add(slug); else set.delete(slug);
+    saveFavs(state.mode);
+    fav.classList.toggle('on', on);
+    fav.setAttribute('aria-pressed', on);
+    fav.title = (on ? 'Remove from' : 'Add to') + ' favorites';
+    fav.textContent = on ? '♥' : '♡';
+    syncFavsToggle();
+    if (state.favsOnly && !on) runSearch(state.page);
+    return;
+  }
 
   // DEV: with a category active, a plain click on an artist tile toggles
   // its membership (the overlay buttons and links still work normally).
@@ -1147,8 +1225,8 @@ gallery.addEventListener('click', e => {
       .map(t => escParens(t.textContent));
     copyText(trigger + ', ' + tags.join(', '), 'Trigger + tags copied');
   } else {
-    copyText(trigger, state.mode === 'artists'
-      ? 'Artist tag copied' : 'Trigger copied');
+    copyText(trigger, MODES[state.mode].kind ? 'Tags copied'
+      : state.mode === 'artists' ? 'Artist tag copied' : 'Trigger copied');
   }
 });
 
@@ -1260,7 +1338,7 @@ contactForm.addEventListener('submit', async e => {
 });
 
 /* ===== mobile drawer ================================================ */
-/* Below 760px the modeswitch / sort / Browse-by menu are reparented
+/* Below 760px the modeswitch / sort are reparented
    from the topbar into the sidebar, and the sidebar becomes a fixed
    slide-in drawer. We move the actual DOM nodes (not clones) so every
    existing event listener on them keeps working without rebinding. */
@@ -1272,28 +1350,25 @@ contactForm.addEventListener('submit', async e => {
   const sidebarTitle = sidebar.querySelector('.sidebar-title');
   const modeswitch = $('#modeswitch');
   const sort       = $('#sort');
-  const navmenu    = $('#browsemenu');
 
   // Original positions so we can restore them when crossing back.
   const home = {
     modeswitch: { parent: topbar, before: searchEl },
     sort:       { parent: topbar, before: null      },   // last child
-    navmenu:    { parent: topbar, before: modeswitch },
   };
 
   let layout = null;   // 'mobile' | 'desktop'
 
   function toMobile(){
     // Insert in REVERSE so the final on-screen order is
-    // modeswitch -> sort -> navmenu -> (sidebar-title -> facets).
-    sidebar.insertBefore(navmenu,    sidebarTitle);
-    sidebar.insertBefore(sort,       navmenu);
+    // modeswitch -> sort -> (sidebar-title -> facets).
+    sidebar.insertBefore(sort,       sidebarTitle);
     sidebar.insertBefore(modeswitch, sort);
   }
   function toDesktop(){
     closeDrawer();
     for (const [key, pos] of Object.entries(home)){
-      const el = { modeswitch, sort, navmenu }[key];
+      const el = { modeswitch, sort }[key];
       if (pos.before) pos.parent.insertBefore(el, pos.before);
       else            pos.parent.appendChild(el);
     }

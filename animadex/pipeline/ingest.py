@@ -42,6 +42,22 @@ def upsert_artist(conn, csv_row: dict) -> dict | None:
     return fields
 
 
+def upsert_kind(conn, kind: str, csv_row: dict, ord_: int) -> dict | None:
+    parsed = db.parse_kind_row(csv_row, ord_)
+    if parsed is None:
+        return None
+    fields, cats = parsed
+    conn.execute(db.upsert_statement(kind, db.KIND_CSV_COLUMNS, 'slug'),
+                 [fields[c] for c in db.KIND_CSV_COLUMNS])
+    conn.execute(f'DELETE FROM {kind}_categories WHERE slug = ?',
+                 (fields['slug'],))
+    if cats:
+        conn.executemany(
+            f'INSERT OR IGNORE INTO {kind}_categories(slug, category) '
+            'VALUES (?, ?)', [(fields['slug'], c) for c in cats])
+    return fields
+
+
 def upsert_one(conn, csv_row: dict, mode: str) -> dict | None:
     if mode == 'characters':
         return upsert_character(conn, csv_row)
@@ -50,13 +66,33 @@ def upsert_one(conn, csv_row: dict, mode: str) -> dict | None:
     raise ValueError(f'unknown mode {mode!r}')
 
 
-def build_db(conn, csv_path: str | Path, mode: str) -> int:
-    """Bulk ingest. Returns the count of rows upserted."""
+_KEY = {'characters': 'character', 'artists': 'artist',
+        **{k: 'slug' for k in db.KINDS}}
+
+
+def build_db(conn, csv_path: str | Path, mode: str,
+             keep_existing: bool = False) -> int:
+    """Bulk ingest. Returns the count of rows upserted.
+
+    keep_existing=True makes the database leading: rows that already exist
+    are left exactly as they are (so edits made in the website survive) and
+    only rows missing from the database are inserted."""
     count = 0
+    existing: set[str] = set()
+    if keep_existing:
+        existing = {r[0] for r in conn.execute(
+            f'SELECT {_KEY[mode]} FROM {mode}')}
     with conn:
         with open(csv_path, encoding='utf-8', newline='') as f:
-            for row in csv.DictReader(f):
-                if upsert_one(conn, row, mode) is not None:
+            for i, row in enumerate(csv.DictReader(f)):
+                if keep_existing and \
+                        (row.get(_KEY[mode]) or '').strip() in existing:
+                    continue
+                if mode in db.KINDS:
+                    ok = upsert_kind(conn, mode, row, i) is not None
+                else:
+                    ok = upsert_one(conn, row, mode) is not None
+                if ok:
                     count += 1
         db.set_meta(conn, f'{mode}_built_at',
                     time.strftime('%Y-%m-%d %H:%M:%S'))

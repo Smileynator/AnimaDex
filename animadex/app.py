@@ -17,6 +17,8 @@ from .config import Config, ensure_dirs, load as load_config
 from .gzip_mw import compress_response
 from .ratelimit import RateLimiter
 from .routes.admin import admin_bp
+from .routes.redo import redo_bp
+from .routes.custom import custom_bp
 from .routes.api_gallery import api as api_gallery_bp
 from .routes.api_images import images_bp
 from .routes.contact import contact_bp
@@ -81,6 +83,8 @@ def create_app(cfg: Config | None = None) -> Flask:
     app.register_blueprint(sitemap_bp)
     app.register_blueprint(contact_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(redo_bp)
+    app.register_blueprint(custom_bp)
 
     return app
 

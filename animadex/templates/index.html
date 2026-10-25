@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ANIMADEX · Anima Character Index</title>
+  <title>ANIMA2.9BDEX · Anima Character Index</title>
   <link rel="icon"             href="{{ url_for('static', filename='favicon.ico') }}" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32"
                               href="{{ url_for('static', filename='favicon-32x32.png') }}">
@@ -24,7 +24,7 @@
   <header class="topbar">
     <a class="brand" href="/">
       <span class="brand-mark">✦</span>
-      <span class="brand-name">ANIMA<b>DEX</b></span>
+      <span class="brand-name">ANIMA2.9B<b>DEX</b></span>
     </a>
 
     <!-- Visible only on mobile; opens the sidebar as a slide-in drawer. -->
@@ -35,18 +35,14 @@
       <span>Filters</span>
     </button>
 
-    <div class="navmenu" id="browsemenu">
-      <button class="navmenu-btn" type="button">
-        Browse by <span class="navcaret">▾</span></button>
-      <div class="navmenu-list">
-        <button type="button" data-browse="copyrights">Copyright</button>
-        <a href="/?mode=artists&amp;category=Webmaster+Curated">Webmaster Curated Artists</a>
-      </div>
-    </div>
-
     <div class="modeswitch" id="modeswitch">
       <button type="button" data-mode="characters" class="on">Characters</button>
       <button type="button" data-mode="artists">Artists</button>
+      <button type="button" data-mode="poses">Poses</button>
+      <button type="button" data-mode="clothing">Clothing</button>
+      <button type="button" data-mode="backgrounds">Backgrounds</button>
+      <button type="button" data-mode="expressions">Expressions</button>
+      <button type="button" data-mode="copyrights">Copyright</button>
     </div>
 
     <div class="search">
@@ -59,7 +55,6 @@
     <div class="sort" id="sort">
       <button data-sort="count" class="on">Image Count</button>
       <button data-sort="az">A–Z</button>
-      <button data-sort="score" hidden>Score</button>
       <button data-sort="random" title="Click again to reshuffle">⚄ Random</button>
     </div>
   </header>
@@ -85,6 +80,18 @@
         <span id="resultcount" class="rc">Loading…</span>
         <div id="chips" class="activechips"></div>
         <button id="clearall" class="clearall" hidden>Clear all ✕</button>
+        <button id="add-open" class="favs-toggle add-open" type="button"
+                hidden title="Add your own item to this dataset (local only)">
+          <span class="fh">＋</span> Add
+        </button>
+        <button id="redo-open" class="favs-toggle redo-open" type="button"
+                hidden title="Images flagged for redo with a custom prompt (local only)">
+          <span class="fh">↻</span> Redo list <span id="redo-count"></span>
+        </button>
+        <button id="favs-toggle" class="favs-toggle" type="button" hidden
+                title="Show only my favourites (saved in this browser)">
+          <span class="fh">♥</span> Favorites <span id="favs-count"></span>
+        </button>
       </div>
 
       <div id="devbar" class="devbar" hidden>
@@ -104,17 +111,7 @@
         <span class="dev-tag">DEV</span>
         <button id="regen-toggle" type="button" class="dev-toggle">
           Regenerate mode</button>
-        <span class="dev-sep"></span>
-        <button id="lora-sync-btn" type="button" class="dev-btn">↻ Sync
-          LoRAs</button>
         <span id="regen-hint" class="dev-hint"></span>
-      </div>
-
-      <div id="artist-note" class="disclaimer" hidden>
-        <b>Score</b> is a simple image-classification rating of each
-        artist's Anima-generated render — representative of that output
-        only, and not a direct or accurate measure of the artist's own
-        aesthetic quality.
       </div>
 
       <div id="gallery" class="gallery"></div>
@@ -124,7 +121,7 @@
   </div>
 
   <footer class="site-footer">
-    <span class="site-mark">ANIMADEX</span>
+    <span class="site-mark">ANIMA2.9BDEX</span>
     <button type="button" id="contact-open" class="footer-link">
       Contact</button>
   </footer>
@@ -206,7 +203,6 @@
         <label>Reason
           <select id="contact-reason" required>
             <option value="" disabled selected>Pick a reason…</option>
-            <option value="lora_takedown">LoRA takedown request</option>
             <option value="content">Content concern</option>
             <option value="bug">Bug report</option>
             <option value="feedback">Feedback / suggestion</option>
@@ -245,5 +241,6 @@
 
   <script>window.ANIMADEX_DEV = {{ 'true' if dev else 'false' }};</script>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script src="{{ url_for('static', filename='redo.js') }}"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ import os
 from urllib.parse import quote
 
 from .config import Config
-from .db import sanitize_filename
+from .db import sanitize_filename, KINDS
 
 
 def thumb_path(cfg: Config, mode: str, filename: str) -> str:
@@ -34,6 +34,8 @@ def _thumb_dir(cfg: Config, mode: str) -> str:
         return os.path.join(cfg.paths.artists_dir, 'thumbs')
     if mode == 'copyrights':
         return os.path.join(cfg.paths.copyrights_dir, 'thumbs')
+    if mode in KINDS:
+        return os.path.join(getattr(cfg.paths, f'{mode}_dir'), 'thumbs')
     raise ValueError(f'unknown mode {mode!r}')
 
 
@@ -42,6 +44,8 @@ def _full_dir(cfg: Config, mode: str) -> str:
         return os.path.join(cfg.paths.characters_dir, 'images')
     if mode == 'artists':
         return os.path.join(cfg.paths.artists_dir, 'images')
+    if mode in KINDS:
+        return os.path.join(getattr(cfg.paths, f'{mode}_dir'), 'images')
     raise ValueError(f'no full image dir for mode {mode!r}')
 
 
@@ -84,6 +88,7 @@ def serialize_character(row) -> dict:
         'thumb_url': thumb_url('characters', slug, v),
         'img_url':   img_url(  'characters', slug, v),
         'has_image': True,
+        'custom': bool(row['custom']) if 'custom' in row.keys() else False,
     }
 
 
@@ -100,6 +105,22 @@ def serialize_artist(row) -> dict:
         'thumb_url': thumb_url('artists', slug, v),
         'img_url':   img_url(  'artists', slug, v),
         'has_image': True,
+        'custom': bool(row['custom']) if 'custom' in row.keys() else False,
+    }
+
+
+def serialize_kind(kind, row) -> dict:
+    slug = row['slug']
+    v = row['image_version'] if 'image_version' in row.keys() else 0
+    return {
+        'slug': slug,
+        'name': row['name'],
+        'tags': [t.strip() for t in (row['tags'] or '').split(',')
+                 if t.strip()],
+        'thumb_url': thumb_url(kind, slug, v),
+        'img_url':   img_url(kind, slug, v),
+        'has_image': True,
+        'custom': bool(row['custom']) if 'custom' in row.keys() else False,
     }
 
 
@@ -118,4 +139,5 @@ def serialize_copyright(row, conn=None) -> dict:
         'count': row['n'],
         'thumb_url': thumb_url('copyrights', slug, version),
         'has_image': True,
+        'custom': bool(row['custom']) if 'custom' in row.keys() else False,
     }

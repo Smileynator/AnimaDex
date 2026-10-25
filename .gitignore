@@ -46,4 +46,17 @@ models/
 *.log
  
  # Dont mind me
-.claude/
+AnimaGen.json
+AnimaGenArtist.json
+generation.log
+test_artist/
+test_artist2/
+test_char/
+danbooru_*.csv
+
+# Local run output / scratch
+*.out
+*.err
+test_kinds*/
+subsets/
+final_set_sheet.jpg

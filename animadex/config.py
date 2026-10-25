@@ -29,6 +29,10 @@ class Paths:
     characters_dir: str = "${data_dir}/characters"
     artists_dir:    str = "${data_dir}/artists"
     copyrights_dir: str = "${data_dir}/copyrights"
+    poses_dir:       str = "${data_dir}/poses"
+    clothing_dir:    str = "${data_dir}/clothing"
+    backgrounds_dir: str = "${data_dir}/backgrounds"
+    expressions_dir: str = "${data_dir}/expressions"
 
 
 @dataclass
@@ -195,5 +199,8 @@ def ensure_dirs(cfg: Config) -> None:
         os.path.join(cfg.paths.artists_dir, "images"),
         os.path.join(cfg.paths.artists_dir, "thumbs"),
         os.path.join(cfg.paths.copyrights_dir, "thumbs"),
+        *[os.path.join(getattr(cfg.paths, f"{k}_dir"), sub)
+          for k in ("poses", "clothing", "backgrounds", "expressions")
+          for sub in ("images", "thumbs")],
     ):
         os.makedirs(d, exist_ok=True)

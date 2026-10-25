@@ -1,0 +1,7 @@
+{
+  "_help": "One positive prompt per set. {tags} is replaced by the item's tags. Edit freely; the next run picks it up. The negative prompt lives in AnimaGenArtist.json.",
+  "poses": "best quality, score_7, score_9, explicit, very aesthetic, ((anime)), soft shading, 1girl, solo, fair skin, shoulder length straight black hair, brown eyes, dark blue school uniform, short tartan blue pleated skirt, black shoes, black knee high socks, {tags}, full_body, simple background, grey background",
+  "clothing": "best quality, score_7, score_9, explicit, very aesthetic, ((anime)), soft shading, 1girl, solo, fair skin, friendly smile, shoulder length straight black hair, brown eyes, {tags}, standing, full_body, simple background, grey background, straight-on, arms at sides",
+  "backgrounds": "best quality, score_7, score_9, explicit, very aesthetic, ultra detailed, ((anime)), 1girl, solo, fair skin, friendly smile, shoulder length straight black hair, brown eyes, {tags}",
+  "expressions": "best quality, score_7, score_9, sensitive, very aesthetic, ((anime)), soft shading, 1girl, solo, fair skin, {tags}, shoulder length straight black hair, brown eyes, portrait, close-up, face focus, looking at viewer, straight-on, eye contact"
+}

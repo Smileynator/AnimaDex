@@ -34,6 +34,8 @@ def _serve(mode: str, slug: str, *, want_thumb: bool):
         row = db.get_character(g.db, slug)
     elif mode == 'artists':
         row = db.get_artist(g.db, slug)
+    elif mode in db.KINDS:
+        row = db.get_kind(g.db, mode, slug)
     else:
         abort(404)
     if row is None:

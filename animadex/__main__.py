@@ -51,8 +51,10 @@ def _cmd_build_db(args):
     ensure_dirs(cfg)
     conn = db.connect_rw(cfg.paths.database)
     try:
-        count = bulk_ingest(conn, args.csv, args.mode)
-        print(f'Upserted {count} {args.mode} from {args.csv}.')
+        count = bulk_ingest(conn, args.csv, args.mode,
+                            keep_existing=args.keep_existing)
+        what = 'Added' if args.keep_existing else 'Upserted'
+        print(f'{what} {count} {args.mode} from {args.csv}.')
     finally:
         conn.close()
 
@@ -66,6 +68,9 @@ def _cmd_build_thumbs(args):
         build_all_for_mode(cfg, 'characters')
     if args.mode in ('all', 'artists'):
         build_all_for_mode(cfg, 'artists')
+    for kind in db.KINDS:
+        if args.mode in ('all', kind):
+            build_all_for_mode(cfg, kind)
     if args.mode in ('all', 'copyrights') and args.csv:
         n = build_copyright_collages(cfg, args.csv)
         print(f'Built {n} copyright collages.')
@@ -85,6 +90,13 @@ def _cmd_sync_loras(args):
     from .pipeline.loras import sync
     cfg = load_config()
     sync(cfg, full=args.full)
+
+
+def _cmd_redo(args):
+    from .pipeline.redo import process_pending
+    cfg = load_config()
+    done, failed = process_pending(cfg, limit=args.limit)
+    print(f'Redo: {done} done, {failed} failed.')
 
 
 def _cmd_genkey(args):
@@ -124,14 +136,18 @@ def main(argv=None):
     s = sub.add_parser('build-db',
                        help='Bulk CSV -> SQLite upsert; no image work.')
     s.add_argument('csv')
-    s.add_argument('--mode', choices=('characters', 'artists'),
-                   required=True)
+    s.add_argument('--mode', required=True,
+                   choices=('characters', 'artists', *db.KINDS))
+    s.add_argument('--keep-existing', action='store_true',
+                   help='Database is leading: only insert rows that are '
+                        'missing, never overwrite existing ones.')
     s.set_defaults(func=_cmd_build_db)
 
     s = sub.add_parser('build-thumbs',
                        help='Build any missing thumbnails and collages.')
     s.add_argument('--mode',
-                   choices=('all', 'characters', 'artists', 'copyrights'),
+                   choices=('all', 'characters', 'artists', 'copyrights',
+                            *db.KINDS),
                    default='all')
     s.add_argument('--csv',
                    help='Character CSV (required for the copyrights step).')
@@ -141,6 +157,12 @@ def main(argv=None):
                        help='Run artwork-scorer over unscored artists.')
     s.add_argument('--limit', type=int, default=0)
     s.set_defaults(func=_cmd_score)
+
+    s = sub.add_parser('redo',
+                       help='Render queued "redo with custom prompt" items.')
+    s.add_argument('--limit', type=int, default=0,
+                   help='Stop after N items (0 = all pending).')
+    s.set_defaults(func=_cmd_redo)
 
     s = sub.add_parser('sync-loras', help='Pull LoRAs from CivitAI.')
     s.add_argument('--full', action='store_true',

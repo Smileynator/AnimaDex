@@ -65,12 +65,26 @@ ARTIST_CSV_COLUMNS = ('artist', 'name', 'name_lower', 'trigger', 'count',
 
 _CHAR_RESULT = ('character', 'copyright', 'name', 'copyright_name',
                 'trigger', 'core_tags', 'count', 'url',
-                'imgname', 'thumbname', 'image_version')
+                'imgname', 'thumbname', 'image_version', 'custom')
 _ARTIST_RESULT = ('artist', 'name', 'trigger', 'count', 'url', 'score',
-                  'imgname', 'thumbname', 'image_version')
+                  'imgname', 'thumbname', 'image_version', 'custom')
 
 
 _SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
+
+# --- tag-library datasets (poses / clothing / backgrounds / expressions)
+KINDS = ('poses', 'clothing', 'backgrounds', 'expressions')
+KIND_FACETS = ('category',)
+KIND_CSV_COLUMNS = ('slug', 'name', 'name_lower', 'tags', 'ord',
+                    'imgname', 'thumbname', 'search_blob')
+_KIND_RESULT = ('slug', 'name', 'tags', 'imgname', 'thumbname',
+                'image_version', 'custom')
+
+
+def _kind(kind: str) -> str:
+    if kind not in KINDS:
+        raise ValueError(f'unknown kind {kind!r}')
+    return kind
 
 
 # --- CSV -> row derivation ---------------------------------------------
@@ -173,6 +187,28 @@ def parse_artist_row(row: dict) -> dict | None:
     }
 
 
+def parse_kind_row(row: dict, ord_: int = 0) -> tuple[dict, list] | None:
+    """CSV row (slug,name,tags,categories,traits) -> (fields, categories)."""
+    slug = (row.get('slug') or '').strip()
+    if not slug:
+        return None
+    name = (row.get('name') or '').strip() or slug
+    tags = (row.get('tags') or '').strip()
+    cats = [c.strip() for c in (row.get('categories') or '').split('|')
+            if c.strip()]
+    stem = sanitize_filename(slug)
+    return {
+        'slug': slug,
+        'name': name,
+        'name_lower': name.lower(),
+        'tags': tags,
+        'ord': ord_,
+        'imgname': stem + '.png',
+        'thumbname': stem + '.webp',
+        'search_blob': ' '.join((slug, name, tags, ' '.join(cats))).lower(),
+    }, cats
+
+
 def upsert_statement(table: str, columns: tuple, key_col: str) -> str:
     """INSERT ... ON CONFLICT that refreshes only the given (CSV) columns."""
     placeholders = ','.join('?' * len(columns))
@@ -192,6 +228,11 @@ def _migrate(conn: sqlite3.Connection) -> None:
     if 'image_version' not in char_cols:
         conn.execute('ALTER TABLE characters ADD COLUMN '
                      'image_version INTEGER NOT NULL DEFAULT 0')
+    for table in ('characters', 'artists', *KINDS):
+        cols = {r[1] for r in conn.execute(f'PRAGMA table_info({table})')}
+        if 'custom' not in cols:
+            conn.execute(f'ALTER TABLE {table} ADD COLUMN '
+                         'custom INTEGER NOT NULL DEFAULT 0')
     artist_cols = {r[1] for r in conn.execute('PRAGMA table_info(artists)')}
     if 'score' not in artist_cols:
         conn.execute('ALTER TABLE artists ADD COLUMN score REAL')
@@ -240,6 +281,25 @@ def count_characters(conn) -> int:
 
 def count_artists(conn) -> int:
     return conn.execute('SELECT COUNT(*) FROM artists').fetchone()[0]
+
+
+def count_kind(kind, conn) -> int:
+    return conn.execute(
+        f'SELECT COUNT(*) FROM {_kind(kind)}').fetchone()[0]
+
+
+def get_kind(conn, kind, slug):
+    return conn.execute(
+        f'SELECT imgname, thumbname, image_version FROM {_kind(kind)} '
+        'WHERE slug = ?', (slug,)).fetchone()
+
+
+def bump_kind_version(conn, kind, slug, version=None) -> int:
+    v = int(version if version is not None else time.time())
+    conn.execute(
+        f'UPDATE {_kind(kind)} SET image_version = '
+        'MAX(image_version, ?) WHERE slug = ?', (v, slug))
+    return v
 
 
 def count_copyrights(conn) -> int:
@@ -321,6 +381,12 @@ def search_characters(conn, q='', sort='count', filters=None,
     if filters.get('loras'):
         where.append('character IN (SELECT character FROM loras)')
 
+    slugs = filters.get('slugs')
+    if slugs is not None:
+        where.append(f'character IN ({",".join("?" * len(slugs))})'
+                     if slugs else '0')
+        params.extend(slugs)
+
     wsql = (' WHERE ' + ' AND '.join(where)) if where else ''
     total = conn.execute(
         'SELECT COUNT(*) FROM characters' + wsql, params).fetchone()[0]
@@ -352,6 +418,12 @@ def search_artists(conn, q='', sort='count', filters=None,
     if chosen:
         where.append(f'artist IN ({",".join("?" * len(chosen))})')
         params.extend(chosen)
+
+    slugs = filters.get('slugs')
+    if slugs is not None:
+        where.append(f'artist IN ({",".join("?" * len(slugs))})'
+                     if slugs else '0')
+        params.extend(slugs)
 
     score_sel = filters.get('score')
     if score_sel:
@@ -387,6 +459,63 @@ def search_artists(conn, q='', sort='count', filters=None,
         params + sort_params + [page_size,
                                  (page - 1) * page_size]).fetchall()
     return total, rows
+
+
+def search_kind(kind, conn, q='', sort='count', filters=None,
+                page=1, page_size=72, seed=None):
+    table = _kind(kind)
+    filters = filters or {}
+    where, params = [], []
+
+    for token in parse_query(q):
+        where.append("search_blob LIKE ? ESCAPE '\\'")
+        params.append(_like(token))
+
+    cats = filters.get('category')
+    if cats:
+        where.append(
+            f'slug IN (SELECT slug FROM {table}_categories '
+            f'WHERE category IN ({",".join("?" * len(cats))}))')
+        params.extend(cats)
+
+    slugs = filters.get('slugs')
+    if slugs is not None:
+        where.append(f'slug IN ({",".join("?" * len(slugs))})'
+                     if slugs else '0')
+        params.extend(slugs)
+
+    wsql = (' WHERE ' + ' AND '.join(where)) if where else ''
+    total = conn.execute(
+        f'SELECT COUNT(*) FROM {table}' + wsql, params).fetchone()[0]
+
+    if sort == 'random':
+        order, sort_params = SHUFFLE_ORDER, [_seed(seed)]
+    elif sort == 'az':
+        order, sort_params = 'name_lower', []
+    else:
+        order, sort_params = 'ord, name_lower', []
+    rows = conn.execute(
+        f'SELECT {",".join(_KIND_RESULT)} FROM {table}{wsql} '
+        f'ORDER BY {order} LIMIT ? OFFSET ?',
+        params + sort_params + [page_size,
+                                 (page - 1) * page_size]).fetchall()
+    return total, rows
+
+
+def kind_facet_values(kind, conn, name, q='', limit=30):
+    table = _kind(kind)
+    if name != 'category':
+        return None
+    q = q.strip().lower()
+    where, params = '', []
+    if q:
+        where = " WHERE category LIKE ? ESCAPE '\\'"
+        params = [_like(q)]
+    rows = conn.execute(
+        f'SELECT category, COUNT(*) AS n FROM {table}_categories{where} '
+        'GROUP BY category ORDER BY category', params).fetchall()
+    values = [{'value': r[0], 'label': r[0], 'count': r[1]} for r in rows]
+    return {'label': 'Category', 'total': len(values), 'values': values}
 
 
 def _row_facet(conn, table, value_col, where, params, limit):

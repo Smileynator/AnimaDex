@@ -58,26 +58,7 @@ PLACEHOLDERS = ("{tags here}", "tags here")
 # generated dataset reasonably safe-for-work. A core_tags entry is dropped
 # if any of its words appears here (whole-word match, so e.g. "unisex" is
 # left alone). Extend this set with any other tags you want excluded.
-EXCLUDED_WORDS = frozenset({
-    # genitalia & explicit anatomy
-    "penis", "penises", "pussy", "vagina", "vaginal", "clitoris", "clit",
-    "anus", "anal", "testicles", "testicle", "nipple", "nipples",
-    "areola", "areolae", "pubic", "foreskin", "scrotum", "labia",
-    "cameltoe", "perineum",
-    # nudity
-    "nude", "naked", "topless", "bottomless",
-    # sex acts
-    "sex", "fellatio", "cunnilingus", "blowjob", "handjob", "footjob",
-    "paizuri", "masturbation", "masturbating", "intercourse",
-    "penetration", "penetrated", "deepthroat", "irrumatio", "fingering",
-    "insertion", "groping", "humping",
-    # fluids & explicit states
-    "cum", "cumdrip", "ejaculation", "ejaculating", "semen", "precum",
-    "squirting", "creampie", "bukkake", "orgasm", "erection",
-    # explicit / fetish content
-    "futanari", "dildo", "vibrator", "ahegao", "gangbang", "threesome",
-    "orgy", "rape", "bestiality", "uncensored",
-})
+EXCLUDED_WORDS = frozenset({})
 
 # Characters that are illegal in Windows filenames.
 ILLEGAL_FS_CHARS = '<>:"/\\|?*'
@@ -87,12 +68,37 @@ MODE_DEFAULTS = {
     "character": ("danbooru_character.csv", "Outputs"),
     "artist":    ("danbooru_artist.csv",    "ArtistOutputs"),
 }
+# Tag-library sets (poses / clothing / backgrounds / expressions): one
+# image per CSV row, rendered from the base prompt in kind_prompts.json
+# with a fixed seed so only the row's tags change.
+KIND_MODES = ("poses", "clothing", "backgrounds", "expressions")
+for _k in KIND_MODES:
+    MODE_DEFAULTS[_k] = (os.path.join("sources", f"{_k}.csv"),
+                         f"{_k.capitalize()}Outputs")
+KIND_PROMPTS_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "kind_prompts.json")
+
+
+def kind_prompt(kind, tags):
+    """Base prompt for `kind` with {tags} replaced (re-read each call so
+    edits to kind_prompts.json apply without restarting)."""
+    with open(KIND_PROMPTS_FILE, encoding="utf-8") as f:
+        raw = f.read()
+    # editors sometimes leave stray control characters (e.g. ESC) in the
+    # file; they are never part of a prompt, so drop them before parsing.
+    raw = "".join(c for c in raw if c >= " " or ord(c) in (9, 10, 13))
+    template = json.loads(raw)[kind]
+    return template.replace("{tags}", tags)
 
 # Fixed, generic, SFW subject for artist renders. Because the prompt is
 # identical for every artist, the artist's *style* is the only variable.
-ARTIST_SUBJECT = ("1girl, solo, brown hair, long hair, wavy hair, "
-                  "green eyes, white blouse, blue pleated skirt, light smile, "
-                  "standing, park, day, cowboy shot, straight-on, arms at sides")
+ARTIST_SUBJECT = ("best quality, score_7, score_9, sensitive, very aesthetic, "
+                  "ultra detailed, 1girl, full_body, "
+                  "ginger hair, long hair, wavy hair, green eyes, "
+                  "white blouse, blue pleated skirt, happy, outside, "
+                  "standing, park, straight-on, arms at sides, "
+                  "bench and trees in background")
 ARTIST_SEED = 42
 
 _LOG_LOCK = threading.Lock()
@@ -256,7 +262,7 @@ def seed_for(key, mode, args):
         return args.seed
     if args.random_seed:
         return random.randint(0, 2 ** 48 - 1)
-    if mode == "artist":
+    if mode == "artist" or mode in KIND_MODES:
         return ARTIST_SEED          # same seed for every artist
     # Deterministic: same trigger always yields the same seed, so a re-run
     # of a previously failed character reproduces the same image.
@@ -317,7 +323,8 @@ def worker(jobs, ctx, counters, stop_event):
         except queue.Empty:
             return
 
-        trigger = (row.get("trigger") or "").strip()
+        trigger = (row.get("slug" if ctx["mode"] in KIND_MODES
+                           else "trigger") or "").strip()
         if not trigger:
             counters.bump("skipped")
             continue
@@ -328,7 +335,10 @@ def worker(jobs, ctx, counters, stop_event):
             counters.bump("skipped")
             continue
 
-        if ctx["mode"] == "artist":
+        if ctx["mode"] in KIND_MODES:
+            prompt_text = kind_prompt(ctx["mode"],
+                                      (row.get("tags") or "").strip())
+        elif ctx["mode"] == "artist":
             prompt_text = artist_prompt(trigger)
         else:
             core_tags = (row.get("core_tags") or "").strip()
@@ -374,7 +384,7 @@ def worker(jobs, ctx, counters, stop_event):
 def parse_args():
     p = argparse.ArgumentParser(
         description="Generate an Anima image dataset via ComfyUI.")
-    p.add_argument("--mode", choices=("character", "artist"),
+    p.add_argument("--mode", choices=("character", "artist", *KIND_MODES),
                    default="character",
                    help="Dataset to generate (default: %(default)s)")
     p.add_argument("--csv", default=None,
@@ -510,6 +520,12 @@ def main():
                  "workflow's prompt nodes.")
     seed_nodes = find_seed_nodes(template)
     template_text = template[prompt_node]["inputs"]["text"]
+    if mode in KIND_MODES:               # fail loudly on a broken prompt file
+        try:
+            kind_prompt(mode, "test")
+        except Exception as e:           # noqa: BLE001
+            sys.exit(f"Cannot read the '{mode}' prompt from "
+                     f"{KIND_PROMPTS_FILE}: {e}")
     log(f"Mode: {mode}  |  prompt node = {prompt_node}, "
         f"seed node(s) = {seed_nodes or 'none'}")
     if mode == "character":

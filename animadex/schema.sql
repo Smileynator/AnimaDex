@@ -94,3 +94,106 @@ CREATE TABLE IF NOT EXISTS copyright_versions (
     filename TEXT PRIMARY KEY,
     version  INTEGER NOT NULL
 );
+
+-- Tag-library datasets: poses, clothing, backgrounds, expressions.
+-- Same shape, kept as four separate tables (plus one category table
+-- each) so each can grow its own columns later.
+
+CREATE TABLE IF NOT EXISTS poses (
+    slug          TEXT PRIMARY KEY,
+    name          TEXT NOT NULL,
+    name_lower    TEXT NOT NULL,
+    tags          TEXT NOT NULL,
+    ord           INTEGER NOT NULL DEFAULT 0,   -- source order
+    imgname       TEXT NOT NULL,
+    thumbname     TEXT NOT NULL,
+    search_blob   TEXT NOT NULL,
+    image_version INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_poses_ord  ON poses(ord, name_lower);
+CREATE INDEX IF NOT EXISTS idx_poses_name ON poses(name_lower);
+CREATE TABLE IF NOT EXISTS poses_categories (
+    slug     TEXT NOT NULL,
+    category TEXT NOT NULL,
+    PRIMARY KEY (slug, category)
+) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS idx_poses_cat ON poses_categories(category);
+
+CREATE TABLE IF NOT EXISTS clothing (
+    slug          TEXT PRIMARY KEY,
+    name          TEXT NOT NULL,
+    name_lower    TEXT NOT NULL,
+    tags          TEXT NOT NULL,
+    ord           INTEGER NOT NULL DEFAULT 0,   -- source order
+    imgname       TEXT NOT NULL,
+    thumbname     TEXT NOT NULL,
+    search_blob   TEXT NOT NULL,
+    image_version INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_clothing_ord  ON clothing(ord, name_lower);
+CREATE INDEX IF NOT EXISTS idx_clothing_name ON clothing(name_lower);
+CREATE TABLE IF NOT EXISTS clothing_categories (
+    slug     TEXT NOT NULL,
+    category TEXT NOT NULL,
+    PRIMARY KEY (slug, category)
+) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS idx_clothing_cat ON clothing_categories(category);
+
+CREATE TABLE IF NOT EXISTS backgrounds (
+    slug          TEXT PRIMARY KEY,
+    name          TEXT NOT NULL,
+    name_lower    TEXT NOT NULL,
+    tags          TEXT NOT NULL,
+    ord           INTEGER NOT NULL DEFAULT 0,   -- source order
+    imgname       TEXT NOT NULL,
+    thumbname     TEXT NOT NULL,
+    search_blob   TEXT NOT NULL,
+    image_version INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_backgrounds_ord  ON backgrounds(ord, name_lower);
+CREATE INDEX IF NOT EXISTS idx_backgrounds_name ON backgrounds(name_lower);
+CREATE TABLE IF NOT EXISTS backgrounds_categories (
+    slug     TEXT NOT NULL,
+    category TEXT NOT NULL,
+    PRIMARY KEY (slug, category)
+) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS idx_backgrounds_cat ON backgrounds_categories(category);
+
+CREATE TABLE IF NOT EXISTS expressions (
+    slug          TEXT PRIMARY KEY,
+    name          TEXT NOT NULL,
+    name_lower    TEXT NOT NULL,
+    tags          TEXT NOT NULL,
+    ord           INTEGER NOT NULL DEFAULT 0,   -- source order
+    imgname       TEXT NOT NULL,
+    thumbname     TEXT NOT NULL,
+    search_blob   TEXT NOT NULL,
+    image_version INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_expressions_ord  ON expressions(ord, name_lower);
+CREATE INDEX IF NOT EXISTS idx_expressions_name ON expressions(name_lower);
+CREATE TABLE IF NOT EXISTS expressions_categories (
+    slug     TEXT NOT NULL,
+    category TEXT NOT NULL,
+    PRIMARY KEY (slug, category)
+) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS idx_expressions_cat ON expressions_categories(category);
+
+-- "Redo with a custom prompt" queue (local-only tool). pre_text/post_text
+-- are the prompt text around the item's own tags, which are always
+-- inserted at generation time (tags_override replaces them only when the
+-- user explicitly unlocked and edited them). status: pending/done/failed.
+CREATE TABLE IF NOT EXISTS redo (
+    mode           TEXT NOT NULL,
+    slug           TEXT NOT NULL,
+    pre_text       TEXT NOT NULL DEFAULT '',
+    post_text      TEXT NOT NULL DEFAULT '',
+    tags_override  TEXT,
+    negative_extra TEXT NOT NULL DEFAULT '',
+    seed           INTEGER,
+    status         TEXT NOT NULL DEFAULT 'pending',
+    error          TEXT NOT NULL DEFAULT '',
+    created_at     TEXT NOT NULL,
+    done_at        TEXT,
+    PRIMARY KEY (mode, slug)
+) WITHOUT ROWID;
